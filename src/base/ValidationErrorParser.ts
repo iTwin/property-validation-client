@@ -56,7 +56,7 @@ export class ValidationErrorParser {
     return new ValidationErrorImpl({
       code: errorCode,
       message: errorMessage,
-      details: errorDetails
+      details: errorDetails,
     });
   }
 

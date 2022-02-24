@@ -4,11 +4,11 @@
  *--------------------------------------------------------------------------------------------*/
 import { OperationsBase } from "../../base/OperationsBase";
 import { PreferReturn } from "../../base/interfaces/CommonInterfaces";
-import { CreateRuleResponse, GetMinimalRulesResponse, GetRuleResponse, GetRulesResponse, MinimalRule, Rule, RuleDetails, UpdateRuleResponse } from "../../base/interfaces/apiEntities/RuleInterfaces";
+import { MinimalRule, ResponseFromCreateRule, ResponseFromGetRule, ResponseFromGetRuleList, ResponseFromGetRuleListMinimal, ResponseFromUpdateRule, Rule, RuleDetails } from "../../base/interfaces/apiEntities/RuleInterfaces";
 import { EntityListIterator } from "../../base/iterators/EntityListIterator";
 import { EntityListIteratorImpl } from "../../base/iterators/EntityListIteratorImpl";
 import { OperationOptions } from "../OperationOptions";
-import { CreateRuleParams, DeleteRuleParams, GetRuleListParams, GetSingleRuleParams, UpdateRuleParams } from "./RuleOperationParams";
+import { ParamsToCreateRule, ParamsToDeleteRule, ParamsToGetRule, ParamsToGetRuleList, ParamsToUpdateRule } from "./RuleOperationParams";
 
 export class RuleOperations<TOptions extends OperationOptions> extends OperationsBase<TOptions> {
   constructor(
@@ -22,18 +22,18 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
    * returned iterator internally queries entities in pages. Wraps the
    * {@link https://developer.bentley.com/apis/validation/operations/get-validation-propertyvalue-rules/ Get Rules}
    * operation from Property Validation API.
-   * @param {GetRuleListParams} params parameters for this operation. See {@link GetRuleListParams}.
+   * @param {ParamsToGetRuleList} params parameters for this operation. See {@link ParamsToGetRuleList}.
    * @returns {EntityListIterator<MinimalRule>} iterator for Rule list. See {@link EntityListIterator},
    * {@link MinimalRule}.
    */
-  public getMinimalList(params: GetRuleListParams): EntityListIterator<MinimalRule> {
+  public getMinimalList(params: ParamsToGetRuleList): EntityListIterator<MinimalRule> {
     const entityCollectionAccessor = (response: unknown) => {
-      const rules = (response as GetMinimalRulesResponse).rules;
+      const rules = (response as ResponseFromGetRuleListMinimal).rules;
       return rules;
     };
 
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<MinimalRule>({
-      authorization: params.authorization,
+      accessToken: params.accessToken,
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
       preferReturn: PreferReturn.Minimal,
       entityCollectionAccessor,
@@ -45,18 +45,18 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
    * iterator internally queries entities in pages. Wraps the
    * {@link https://developer.bentley.com/apis/validation/operations/get-validation-propertyvalue-rules/ Get Rules}
    * operation from Property Validation API.
-   * @param {GetRuleListParams} params parameters for this operation. See {@link GetRuleListParams}.
-   * @returns {EntityListIterator<Rule>} iterator for Rule list. See {@link EntityListIterator},
-   * {@link Rule}.
+   * @param {ParamsToGetRuleList} params parameters for this operation. See {@link ParamsToGetRuleList}.
+   * @returns {EntityListIterator<RuleDetails>} iterator for Rule list. See {@link EntityListIterator},
+   * {@link RuleDetails}.
    */
-  public getRepresentationList(params: GetRuleListParams): EntityListIterator<RuleDetails> {
+  public getRepresentationList(params: ParamsToGetRuleList): EntityListIterator<RuleDetails> {
     const entityCollectionAccessor = (response: unknown) => {
-      const rules = (response as GetRulesResponse).rules;
+      const rules = (response as ResponseFromGetRuleList).rules;
       return rules;
     };
 
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<RuleDetails>({
-      authorization: params.authorization,
+      accessToken: params.accessToken,
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
       entityCollectionAccessor,
@@ -67,18 +67,13 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
    * Gets a single Rule identified by id. This method returns a Rule in its full representation.
    * Wraps the {@link https://developer.bentley.com/apis/validation/operations/get-validation-propertyvalue-rule/
    * Get Rule} operation from Property Validation API.
-   * @param {GetSingleRuleParams} params parameters for this operation. See {@link GetSingleRuleParams}.
-   * @returns {Promise<Rule>} a Rule with specified id. See {@link Rule}.
+   * @param {ParamsToGetRule} params parameters for this operation. See {@link ParamsToGetRule}.
+   * @returns {Promise<RuleDetails>} a Rule with specified id. See {@link RuleDetails}.
    */
-  public async getSingle(params: GetSingleRuleParams): Promise<RuleDetails> {
-    const rule: RuleDetails = await this.querySingleInternal(params);
-    return rule;
-  }
-
-  protected async querySingleInternal(params: GetSingleRuleParams): Promise<RuleDetails> {
-    const { authorization, ruleId } = params;
-    const response = await this.sendGetRequest<GetRuleResponse>({
-      authorization,
+  public async getSingle(params: ParamsToGetRule): Promise<RuleDetails> {
+    const { accessToken, ruleId } = params;
+    const response = await this.sendGetRequest<ResponseFromGetRule>({
+      accessToken,
       url: this._options.urlFormatter.getSingleRuleUrl({ ruleId }),
     });
     return response.rule;
@@ -88,17 +83,13 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
    * Deletes a single Rule identified by id.
    * Wraps the {@link https://developer.bentley.com/apis/validation/operations/delete-validation-propertyvalue-rule/
    * Delete Rule} operation from Property Validation API.
-   * @param {DeleteRuleParams} params parameters for this operation. See {@link DeleteRuleParams}.
-   * @returns {Promise<void>}. See {@link Rule}.
+   * @param {ParamsToDeleteRule} params parameters for this operation. See {@link ParamsToDeleteRule}.
+   * @returns {Promise<void>}.
    */
-  public async delete(params: DeleteRuleParams): Promise<void> {
-    await this.deleteInternal(params);
-  }
-
-  protected async deleteInternal(params: DeleteRuleParams): Promise<void> {
-    const { authorization, ruleId } = params;
+  public async delete(params: ParamsToDeleteRule): Promise<void> {
+    const { accessToken, ruleId } = params;
     await this.sendDeleteRequest<void>({
-      authorization,
+      accessToken,
       url: this._options.urlFormatter.deleteRuleUrl({ ruleId }),
     });
   }
@@ -106,32 +97,32 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
   /**
    * Creates a Rule. Wraps the {@link https://developer.bentley.com/apis/validation/operations/create-validation-propertyvalue-rule/
    * Create Rule} operation from Property Validation API.
-   * @param {CreateRuleParams} params parameters for this operation. See {@link CreateRuleParams}.
-   * @returns newly created Rule. See {@link Rule}.
+   * @param {ParamsToCreateRule} params parameters for this operation. See {@link ParamsToCreateRule}.
+   * @returns {Promise<Rule>} newly created Rule. See {@link Rule}.
    */
-  public async create(params: CreateRuleParams): Promise<Rule> {
-    const createRuleResponse = await this.sendPostRequest<CreateRuleResponse>({
-      authorization: params.authorization,
+  public async create(params: ParamsToCreateRule): Promise<Rule> {
+    const response = await this.sendPostRequest<ResponseFromCreateRule>({
+      accessToken: params.accessToken,
       url: this._options.urlFormatter.createRuleUrl(),
       body: params.createRuleBody,
     });
 
-    return createRuleResponse.rule;
+    return response.rule;
   }
 
   /**
    * Updates a Rule. Wraps the {@link https://developer.bentley.com/apis/validation/operations/update-validation-propertyvalue-rule/
    * Update Rule} operation from Property Validation API.
-   * @param {UpdateRuleParams} params parameters for this operation. See {@link UpdateRuleParams}.
-   * @returns newly updated Rule. See {@link Rule}.
+   * @param {ParamsToUpdateRule} params parameters for this operation. See {@link ParamsToUpdateRule}.
+   * @returns {Promise<Rule>} newly updated Rule. See {@link Rule}.
    */
-  public async update(params: UpdateRuleParams): Promise<Rule> {
-    const updateRuleResponse = await this.sendPutRequest<UpdateRuleResponse>({
-      authorization: params.authorization,
+  public async update(params: ParamsToUpdateRule): Promise<Rule> {
+    const response = await this.sendPutRequest<ResponseFromUpdateRule>({
+      accessToken: params.accessToken,
       url: this._options.urlFormatter.updateRuleUrl(params),
       body: params.updateRuleBody,
     });
 
-    return updateRuleResponse.rule;
+    return response.rule;
   }
 }

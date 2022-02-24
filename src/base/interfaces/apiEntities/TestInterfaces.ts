@@ -33,7 +33,6 @@ export interface TestItem {
   creationDateTime: string;
   /** Test modification date. */
   modificationDateTime: string;
-  /** Test links. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: TestLinks;
 }
@@ -52,24 +51,23 @@ export interface TestDetails {
   rules: string[];
   /** Stop execution on failure flag. */
   stopExecutionOnFailure: boolean;
-  /** Test links. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: TestLinks;
 }
 
-/** Single Test API response. */
-export interface TestResponse {
+/** Get Test API response. */
+export interface ResponseFromGetTest {
   test: TestDetails;
 }
 
 /** Test list API response. */
-export interface TestsResponse extends CollectionResponse {
+export interface ResponseFromGetTestList extends CollectionResponse {
   tests: TestItem[];
 }
 
 /** Create Test API request. */
-export interface CreateTestRequest {
-  /** Project id. */
+export interface RequestToCreateTest {
+  /** Project id to associate with test. */
   projectId: string;
   /** Test display name. */
   displayName: string;
@@ -82,7 +80,7 @@ export interface CreateTestRequest {
 }
 
 /** Update Test API request. */
-export interface UpdateTestRequest {
+export interface RequestToUpdateTest {
   /** Test display name. */
   displayName: string;
   /** Test description. */
@@ -110,21 +108,20 @@ export interface Test {
   rules: string[];
   /** Stop execution on failure flag. */
   stopExecutionOnFailure: boolean;
-  /** Test links. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: TestSelfLink;
 }
 
 /** Create Test API Response. */
-export interface CreateTestResponse {
+export interface ResponseFromCreateTest {
   test: Test;
 }
 
 /** Create Test API Response. */
-export type UpdateTestResponse = CreateTestResponse;
+export type ResponseFromUpdateTest = ResponseFromCreateTest;
 
 /** Run test API request. */
-export interface RunTestRequest {
+export interface RequestToRunTest {
   /** Test id. */
   testId: string;
   /** iModel id. */
@@ -142,12 +139,11 @@ export interface RunLink {
 export interface Run {
   /** Run id. */
   id: string;
-  /** Run link. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RunLink;
 }
 
 /** Run test API Response. */
-export interface RunTestResponse {
+export interface ResponseFromRunTest {
   run: Run;
 }

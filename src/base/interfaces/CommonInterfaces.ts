@@ -11,33 +11,10 @@ export interface ApiOptions {
   version?: string;
 }
 
-/**
- * Request authorization data. This data is sent to the server in `Authorization` request header, the header value is
- * formatted by joining `scheme` and `token` property values with a single space.
- */
-export interface Authorization {
-  /**
-   * Authentication scheme. For information on supported authentication schemes see
-   * {@link https://developer.bentley.com/apis/validation/operations/get-validation-propertyvalue-result/#authentication Validation API documenation}.
-   */
-  scheme: string;
-  /** Access token. */
-  token: string;
-}
-
-/**
- * Interface for a function that returns authorization data. It is up to the consumer of this library to implement
- * user authentication and pass that function as an argument into all specific operation functions.
- * This function will be called every time a request is sent to the API meaning that it can be called more than
- * once during a single operation execution. Authorization retrieval should be performant and utilize caching when
- * appropriate. See {@link Authorization}.
- */
-export type AuthorizationCallback = () => Promise<Authorization>;
-
 /** Authorization data parameter. This interface is extended by all other specific operation parameter interfaces. */
 export interface AuthorizationParam {
-  /** Function that returns valid authorization data. See {@link AuthorizationCallback}. */
-  authorization: AuthorizationCallback;
+  /** Authorization token. eg: 'Bearer ey...'*/
+  accessToken: string;
 }
 
 /** Common url parameters that are supported for all entity list requests. */

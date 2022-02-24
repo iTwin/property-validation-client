@@ -2,38 +2,38 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { CreateRuleRequest, UpdateRuleRequest } from "../../base/interfaces/apiEntities/RuleInterfaces";
+import { RequestToCreateRule, RequestToUpdateRule } from "../../base/interfaces/apiEntities/RuleInterfaces";
 import { AuthorizationParam, CollectionRequestParams } from "../../base/interfaces/CommonInterfaces";
 
 /** Url parameters supported in Rule list query. */
-export interface GetRuleListUrlParams extends CollectionRequestParams {
+export interface ParamsToGetRuleListUrl extends CollectionRequestParams {
   /** Filters Rules for a specific project. */
   projectId: string;
 }
 
 /** Parameters for get Rule list operation. */
-export interface GetRuleListParams extends AuthorizationParam {
+export interface ParamsToGetRuleList extends AuthorizationParam {
   /** Parameters that will be appended to the entity list request url that will narrow down the results. */
-  urlParams?: GetRuleListUrlParams;
+  urlParams?: ParamsToGetRuleListUrl;
 }
 
 /** Parameters for get single Rule operation. */
-export interface GetSingleRuleParams extends AuthorizationParam {
+export interface ParamsToGetRule extends AuthorizationParam {
   /** Rule id. */
   ruleId: string;
 }
 
 /** Parameters for delete single Rule operation. */
-export type DeleteRuleParams = GetSingleRuleParams;
+export type ParamsToDeleteRule = ParamsToGetRule;
 
 /** Parameters for create Rule operation. */
-export interface CreateRuleParams extends AuthorizationParam {
+export interface ParamsToCreateRule extends AuthorizationParam {
   /** Rule create request body. */
-  createRuleBody: CreateRuleRequest;
+  createRuleBody: RequestToCreateRule;
 }
 
 /** Parameters for update Rule operation. */
-export interface UpdateRuleParams extends GetSingleRuleParams {
+export interface ParamsToUpdateRule extends ParamsToGetRule {
   /** Rule update request body. */
-  updateRuleBody: UpdateRuleRequest;
+  updateRuleBody: RequestToUpdateRule;
 }

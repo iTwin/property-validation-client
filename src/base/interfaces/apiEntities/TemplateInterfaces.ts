@@ -14,12 +14,12 @@ export interface RuleTemplate {
   description: string;
   /** Template prompt string. */
   prompt: string;
-  /** Template expression. */
+  /** Template function parameters. */
   templateExpression: FunctionParameters;
 }
 
 /** Rule Template list API response. */
-export interface TemplatesResponse extends CollectionResponse {
+export interface ResponseFromGetTemplates extends CollectionResponse {
   ruleTemplates: RuleTemplate[];
 }
 

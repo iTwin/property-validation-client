@@ -28,7 +28,6 @@ export interface MinimalRule {
   id: string;
   /** Rule display name. */
   displayName: string;
-  /** Rule detail link. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RuleDetailLink;
 }
@@ -61,28 +60,27 @@ export interface RuleDetails {
   functionName: string;
   /** Data type of Rule ('property', 'aspect', 'typeDefinition'). */
   dataType: string;
-  /** Rule user info links. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RuleUserInfoLinks;
 }
 
-/** Single Rule API response. */
-export interface GetRuleResponse {
+/** Get Rule API response. */
+export interface ResponseFromGetRule {
   rule: RuleDetails;
 }
 
 /** Minimal Rule list API response. */
-export interface GetMinimalRulesResponse extends CollectionResponse {
+export interface ResponseFromGetRuleListMinimal extends CollectionResponse {
   rules: MinimalRule[];
 }
 
 /** Representation Rule list API response. */
-export interface GetRulesResponse extends CollectionResponse {
+export interface ResponseFromGetRuleList extends CollectionResponse {
   rules: RuleDetails[];
 }
 
 /** Create Rule API request. */
-export interface CreateRuleRequest {
+export interface RequestToCreateRule {
   /** Rule template id. */
   templateId: string;
   /** Rule display name. */
@@ -104,7 +102,7 @@ export interface CreateRuleRequest {
 }
 
 /** Create Rule API request. */
-export interface UpdateRuleRequest {
+export interface RequestToUpdateRule {
   /** Rule display name. */
   displayName: string;
   /** Rule description. */
@@ -120,12 +118,12 @@ export interface UpdateRuleRequest {
 }
 
 /** Create Rule API Response. */
-export interface CreateRuleResponse {
+export interface ResponseFromCreateRule {
   rule: Rule;
 }
 
 /** Create Rule API Response. */
-export type UpdateRuleResponse = CreateRuleResponse;
+export type ResponseFromUpdateRule = ResponseFromCreateRule;
 
 /** Create/update Rule Response object. */
 export interface Rule {
@@ -149,7 +147,6 @@ export interface Rule {
   whereClause?: string;
   /** Data type of Rule ('property', 'aspect', 'typeDefinition'). */
   dataType: string;
-  /** Rule self link. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RuleSelfLink;
 }

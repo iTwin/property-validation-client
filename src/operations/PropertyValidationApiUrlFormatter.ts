@@ -3,10 +3,10 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import { Dictionary } from "../base/interfaces/UtilityTypes";
-import { GetTemplateListUrlParams } from "./template/TemplateOperationParams";
-import { GetTestListUrlParams } from "./test/TestOperationParams";
-import { GetRuleListUrlParams } from "./rule/RuleOperationParams";
-import { GetRunListUrlParams } from "./run/RunOperationParams";
+import { ParamsToGetTemplateListUrl } from "./template/TemplateOperationParams";
+import { ParamsToGetTestListUrl } from "./test/TestOperationParams";
+import { ParamsToGetRuleListUrl } from "./rule/RuleOperationParams";
+import { ParamsToGetRunListUrl } from "./run/RunOperationParams";
 
 type UrlParameterValue = string | number;
 
@@ -19,7 +19,7 @@ export class PropertyValidationApiUrlFormatter {
     return `${this.baseUrl}/rules/${params.ruleId}`;
   }
 
-  public getRuleListUrl(params: { urlParams?: GetRuleListUrlParams }): string {
+  public getRuleListUrl(params: { urlParams?: ParamsToGetRuleListUrl }): string {
     return `${this.baseUrl}/rules${this.formQueryString({ ...params.urlParams })}`;
   }
 
@@ -35,7 +35,7 @@ export class PropertyValidationApiUrlFormatter {
     return `${this.baseUrl}/rules/${params.ruleId}`;
   }
 
-  public getTemplateListUrl(params: { urlParams?: GetTemplateListUrlParams }): string {
+  public getTemplateListUrl(params: { urlParams?: ParamsToGetTemplateListUrl }): string {
     return `${this.baseUrl}/ruleTemplates${this.formQueryString({ ...params.urlParams })}`;
   }
 
@@ -43,7 +43,7 @@ export class PropertyValidationApiUrlFormatter {
     return `${this.baseUrl}/tests/${params.testId}`;
   }
 
-  public getTestListUrl(params: { urlParams?: GetTestListUrlParams }): string {
+  public getTestListUrl(params: { urlParams?: ParamsToGetTestListUrl }): string {
     return `${this.baseUrl}/tests${this.formQueryString({ ...params.urlParams })}`;
   }
 
@@ -63,7 +63,7 @@ export class PropertyValidationApiUrlFormatter {
     return `${this.baseUrl}/runs/${params.runId}`;
   }
 
-  public getRunListUrl(params: { urlParams?: GetRunListUrlParams }): string {
+  public getRunListUrl(params: { urlParams?: ParamsToGetRunListUrl }): string {
     return `${this.baseUrl}/runs${this.formQueryString({ ...params.urlParams })}`;
   }
 

@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 export class Constants {
   public static api = {
-    baseUrl: "https://qa-api.bentley.com/validation/propertyValue",
+    baseUrl: "https://api.bentley.com/validation/propertyValue",
     version: "itwin-platform.v1",
   };
 

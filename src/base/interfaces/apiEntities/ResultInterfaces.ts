@@ -23,8 +23,8 @@ export interface RuleList {
   displayName: string;
 }
 
-/** Single Result API response. */
-export interface GetResultResponse {
+/** Get Result API response. */
+export interface ResponseFromGetResult {
   result: ResultDetails[];
   ruleList: RuleList[];
 }
