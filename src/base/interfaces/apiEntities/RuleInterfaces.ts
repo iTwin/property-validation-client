@@ -79,44 +79,6 @@ export interface ResponseFromGetRuleList extends CollectionResponse {
   rules: RuleDetails[];
 }
 
-/** Create Rule API request. */
-export interface RequestToCreateRule {
-  /** Rule template id. */
-  templateId: string;
-  /** Rule display name. */
-  displayName: string;
-  /** Rule description. */
-  description: string;
-  /** EC class of Rule. */
-  ecClass: string;
-  /** EC schema of Rule. */
-  ecSchema: string;
-  /** Where clause of Rule. */
-  whereClause: string;
-  /** Rule severity ('low', 'medium', 'high', 'veryHigh'). */
-  severity: string;
-  /** Data type of Rule ('property', 'aspect', 'typeDefinition'). */
-  dataType: string;
-  /** Rule function parameters. */
-  functionParameters: FunctionParameters;
-}
-
-/** Create Rule API request. */
-export interface RequestToUpdateRule {
-  /** Rule display name. */
-  displayName: string;
-  /** Rule description. */
-  description: string;
-  /** EC class of Rule. */
-  ecClass: string;
-  /** EC schema of Rule. */
-  ecSchema: string;
-  /** Where clause of Rule. */
-  whereClause: string;
-  /** Rule severity ('low', 'medium', 'high', 'veryHigh'). */
-  severity: string;
-}
-
 /** Create Rule API Response. */
 export interface ResponseFromCreateRule {
   rule: Rule;

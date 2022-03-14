@@ -2,8 +2,8 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { RequestToCreateRule, RequestToUpdateRule } from "../../base/interfaces/apiEntities/RuleInterfaces";
-import { AuthorizationParam, CollectionRequestParams } from "../../base/interfaces/CommonInterfaces";
+import { AuthorizationParam, CollectionRequestParams, FunctionParameters } from "../../base/interfaces/CommonInterfaces";
+
 
 /** Url parameters supported in Rule list query. */
 export interface ParamsToGetRuleListUrl extends CollectionRequestParams {
@@ -28,12 +28,38 @@ export type ParamsToDeleteRule = ParamsToGetRule;
 
 /** Parameters for create Rule operation. */
 export interface ParamsToCreateRule extends AuthorizationParam {
-  /** Rule create request body. */
-  createRuleBody: RequestToCreateRule;
+  /** Rule template id. */
+  templateId: string;
+  /** Rule display name. */
+  displayName: string;
+  /** Rule description. */
+  description: string;
+  /** EC class of Rule. */
+  ecClass: string;
+  /** EC schema of Rule. */
+  ecSchema: string;
+  /** Where clause of Rule. */
+  whereClause: string;
+  /** Rule severity ('low', 'medium', 'high', 'veryHigh'). */
+  severity: string;
+  /** Data type of Rule ('property', 'aspect', 'typeDefinition'). */
+  dataType: string;
+  /** Rule function parameters. */
+  functionParameters: FunctionParameters;
 }
 
 /** Parameters for update Rule operation. */
 export interface ParamsToUpdateRule extends ParamsToGetRule {
-  /** Rule update request body. */
-  updateRuleBody: RequestToUpdateRule;
+  /** Rule display name. */
+  displayName: string;
+  /** Rule description. */
+  description: string;
+  /** EC class of Rule. */
+  ecClass: string;
+  /** EC schema of Rule. */
+  ecSchema: string;
+  /** Where clause of Rule. */
+  whereClause: string;
+  /** Rule severity ('low', 'medium', 'high', 'veryHigh'). */
+  severity: string;
 }

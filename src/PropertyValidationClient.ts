@@ -2,7 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { ApiOptions } from "./base/interfaces/CommonInterfaces";
+import { AccessTokenCallback, ApiOptions } from "./base/interfaces/CommonInterfaces";
 import { RecursiveRequired } from "./base/interfaces/UtilityTypes";
 import { AxiosRestClient } from "./base/rest/AxiosRestClient";
 import { RestClient } from "./base/rest/RestClient";
@@ -43,11 +43,12 @@ export class PropertyValidationClient {
    * @param {PropertyValidationClientOptions} options client options. If `options` are `undefined` or if some of the properties
    * are `undefined` the client uses defaults. See {@link PropertyValidationClientOptions}.
    */
-  constructor(options?: PropertyValidationClientOptions) {
+  constructor(options?: PropertyValidationClientOptions, accessTokenCallback?: AccessTokenCallback) {
     const filledPropertyValidationClientOptions = PropertyValidationClient.fillConfiguration(options);
     this._operationsOptions = {
       ...filledPropertyValidationClientOptions,
       urlFormatter: new PropertyValidationApiUrlFormatter(filledPropertyValidationClientOptions.api.baseUrl),
+      accessTokenCallback,
     };
     this.templateId = "";
     this.ruleId = "";

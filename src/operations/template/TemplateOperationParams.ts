@@ -15,3 +15,9 @@ export interface ParamsToGetTemplateList extends AuthorizationParam {
   /** Parameters that will be appended to the entity list request url that will narrow down the results. */
   urlParams?: ParamsToGetTemplateListUrl;
 }
+
+/** Parameters for get single Template operation. */
+export interface ParamsToGetTemplate extends ParamsToGetTemplateList {
+  /** Function name. */
+  functionName: string;
+}

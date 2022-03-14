@@ -2,7 +2,6 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { RequestToCreateTest, RequestToRunTest, RequestToUpdateTest } from "../../base/interfaces/apiEntities/TestInterfaces";
 import { AuthorizationParam, CollectionRequestParams } from "../../base/interfaces/CommonInterfaces";
 
 /** Url parameters supported in Test list query. */
@@ -28,18 +27,36 @@ export type ParamsToDeleteTest = ParamsToGetTest;
 
 /** Parameters for create Test operation. */
 export interface ParamsToCreateTest extends AuthorizationParam {
-  /** Test create request body. */
-  createTestBody: RequestToCreateTest;
+  /** Project id to associate with test. */
+  projectId: string;
+  /** Test display name. */
+  displayName: string;
+  /** Test description. */
+  description: string;
+  /** Stop execution on failure flag. */
+  stopExecutionOnFailure: boolean;
+  /** Array of rule ids to associate with test. */
+  rules: string[];
 }
 
 /** Parameters for update Test operation. */
 export interface ParamsToUpdateTest extends ParamsToGetTest {
-  /** Test update request body. */
-  updateTestBody: RequestToUpdateTest;
+  /** Test display name. */
+  displayName: string;
+  /** Test description. */
+  description: string;
+  /** Stop execution on failure flag. */
+  stopExecutionOnFailure: boolean;
+  /** Array of rule ids to associate with test. */
+  rules: string[];
 }
 
 /** Parameters for Run Test operation. */
 export interface ParamsToRunTest extends AuthorizationParam {
-  /** Run test request body. */
-  runTestBody: RequestToRunTest;
+  /** Test id. */
+  testId: string;
+  /** iModel id. */
+  iModelId: string;
+  /** Named version id. */
+  namedVersionId?: string;
 }

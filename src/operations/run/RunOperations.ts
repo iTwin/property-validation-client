@@ -25,9 +25,14 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    */
   public async getMinimalList(params: ParamsToGetRunList): Promise<MinimalRun[]> {
     const response = await this.sendGetRequest<ResponseFromGetRunListMinimal>({
-      accessToken: params.accessToken,
+      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRunListUrl({ urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
+    });
+    // Extract the resultId from the result URL link and return it in the resultId of the response
+    response.runs.forEach((run) => {
+      const tokens = run._links.result.href.split("/");
+      run.resultId = tokens[tokens.length-1];
     });
     return response.runs;
   }
@@ -42,10 +47,16 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    */
   public async getRepresentationList(params: ParamsToGetRunList): Promise<RunDetails[]> {
     const response = await this.sendGetRequest<ResponseFromGetRunList>({
-      accessToken: params.accessToken,
+      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRunListUrl({ urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
     });
+    // Extract the resultId from the result URL link and return it in the resultId of the response
+    response.runs.forEach((run) => {
+      const tokens = run._links.result.href.split("/");
+      run.resultId = tokens[tokens.length-1];
+    });
+
     return response.runs;
   }
 
@@ -59,9 +70,12 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
   public async getSingle(params: ParamsToGetRun): Promise<RunDetails> {
     const { accessToken, runId } = params;
     const response = await this.sendGetRequest<ResponseFromGetRun>({
-      accessToken,
+      accessToken: accessToken ? accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleRunUrl({ runId }),
     });
+    // Extract the resultId from the result URL link and return it in the resultId of the response
+    const tokens = response.run._links.result.href.split("/");
+    response.run.resultId = tokens[tokens.length-1];
     return response.run;
   }
 
@@ -73,7 +87,7 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    */
   public async delete(params: ParamsToDeleteRun): Promise<void> {
     await this.sendDeleteRequest<void>({
-      accessToken: params.accessToken,
+      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteRunUrl(params),
     });
   }

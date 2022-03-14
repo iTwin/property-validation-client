@@ -6,8 +6,9 @@ import { OperationsBase } from "../../base/OperationsBase";
 import { ResponseFromGetTemplates, RuleTemplate } from "../../base/interfaces/apiEntities/TemplateInterfaces";
 import { EntityListIterator } from "../../base/iterators/EntityListIterator";
 import { EntityListIteratorImpl } from "../../base/iterators/EntityListIteratorImpl";
+import { take } from "../../base/iterators/IteratorUtilFunctions";
 import { OperationOptions } from "../OperationOptions";
-import { ParamsToGetTemplateList } from "./TemplateOperationParams";
+import { ParamsToGetTemplate, ParamsToGetTemplateList } from "./TemplateOperationParams";
 
 export class TemplateOperations<TOptions extends OperationOptions> extends OperationsBase<TOptions> {
   constructor(
@@ -32,9 +33,34 @@ export class TemplateOperations<TOptions extends OperationOptions> extends Opera
     };
 
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<RuleTemplate>({
-      accessToken: params.accessToken,
+      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getTemplateListUrl({ urlParams: params.urlParams }),
       entityCollectionAccessor,
     }));
+  }
+
+  /**
+   * Gets a single Rule Template identified by function name.
+   * @param {ParamsToGetTemplate} params parameters for this operation. See {@link ParamsToGetTemplate}.
+   * @returns {Promise<RuleTemplate>} a Rule Template with specified name. See {@link RuleTemplate}.
+   */
+  public async getSingle(params: ParamsToGetTemplate): Promise<RuleTemplate | null> {
+    const { accessToken, urlParams } = params;
+    const functionName = params.functionName.toLowerCase();
+    const paramsToGetTemplateList: ParamsToGetTemplateList = {
+      accessToken: accessToken ? accessToken : await this._options.accessTokenCallback!(),
+      urlParams,
+    };
+
+    const templatesIterator: EntityListIterator<RuleTemplate> = this.getList(paramsToGetTemplateList);
+    const templates: RuleTemplate[] = await take(templatesIterator, 100);
+
+    return new Promise((resolve) => {
+      templates.forEach((template) => {
+        if (functionName === template.displayName.toLowerCase())
+          resolve(template);
+      });
+      resolve(null);
+    });
   }
 }

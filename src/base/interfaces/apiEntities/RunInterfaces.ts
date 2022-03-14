@@ -18,6 +18,8 @@ export interface MinimalRun {
   id: string;
   /** Run display name. */
   displayName: string;
+  /** Result id. */
+  resultId: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RunDetailLink;
 }
@@ -36,6 +38,8 @@ export interface RunDetails {
   userName: string;
   /** The status of the validation run. One of 'queued', 'started', 'completed', 'failed', 'downloadingIModel', 'storingResults', 'inProgress', 'completedToLimit', 'cancelled'. */
   status: string;
+  /** Result id. */
+  resultId: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RunDetailLink;
 }

@@ -33,7 +33,7 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
     };
 
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<MinimalRule>({
-      accessToken: params.accessToken,
+      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
       preferReturn: PreferReturn.Minimal,
       entityCollectionAccessor,
@@ -56,7 +56,7 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
     };
 
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<RuleDetails>({
-      accessToken: params.accessToken,
+      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
       entityCollectionAccessor,
@@ -73,7 +73,7 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
   public async getSingle(params: ParamsToGetRule): Promise<RuleDetails> {
     const { accessToken, ruleId } = params;
     const response = await this.sendGetRequest<ResponseFromGetRule>({
-      accessToken,
+      accessToken: accessToken ? accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleRuleUrl({ ruleId }),
     });
     return response.rule;
@@ -89,7 +89,7 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
   public async delete(params: ParamsToDeleteRule): Promise<void> {
     const { accessToken, ruleId } = params;
     await this.sendDeleteRequest<void>({
-      accessToken,
+      accessToken: accessToken ? accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteRuleUrl({ ruleId }),
     });
   }
@@ -101,10 +101,21 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
    * @returns {Promise<Rule>} newly created Rule. See {@link Rule}.
    */
   public async create(params: ParamsToCreateRule): Promise<Rule> {
+    const body = {
+      templateId: params.templateId,
+      displayName: params.displayName,
+      description: params.description,
+      ecClass: params.ecClass,
+      ecSchema: params.ecSchema,
+      whereClause: params.whereClause,
+      severity: params.severity,
+      dataType: params.dataType,
+      functionParameters: params.functionParameters,
+    };
     const response = await this.sendPostRequest<ResponseFromCreateRule>({
-      accessToken: params.accessToken,
+      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.createRuleUrl(),
-      body: params.createRuleBody,
+      body,
     });
 
     return response.rule;
@@ -117,10 +128,18 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
    * @returns {Promise<Rule>} newly updated Rule. See {@link Rule}.
    */
   public async update(params: ParamsToUpdateRule): Promise<Rule> {
+    const body = {
+      displayName: params.displayName,
+      description: params.description,
+      ecClass: params.ecClass,
+      ecSchema: params.ecSchema,
+      whereClause: params.whereClause,
+      severity: params.severity,
+    };
     const response = await this.sendPutRequest<ResponseFromUpdateRule>({
-      accessToken: params.accessToken,
+      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.updateRuleUrl(params),
-      body: params.updateRuleBody,
+      body,
     });
 
     return response.rule;

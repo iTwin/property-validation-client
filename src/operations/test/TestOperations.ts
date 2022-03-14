@@ -7,7 +7,9 @@ import { ResponseFromCreateTest, ResponseFromGetTest, ResponseFromGetTestList, R
 import { EntityListIterator } from "../../base/iterators/EntityListIterator";
 import { EntityListIteratorImpl } from "../../base/iterators/EntityListIteratorImpl";
 import { OperationOptions } from "../OperationOptions";
-import { ParamsToCreateTest, ParamsToDeleteTest, ParamsToGetTest, ParamsToGetTestList, ParamsToRunTest, ParamsToUpdateTest  } from "./TestOperationParams";
+import { ParamsToCreateTest, ParamsToDeleteTest, ParamsToGetTest, ParamsToGetTestList, ParamsToRunTest, ParamsToUpdateTest } from "./TestOperationParams";
+import { AuthorizationCallback, GetNamedVersionListParams, IModelsClient, MinimalNamedVersion, NamedVersionOrderByProperty, OrderByOperator, toArray } from "@itwin/imodels-client-management";
+import { AccessTokenAdapter } from "@itwin/imodels-access-frontend";
 
 export class TestOperations<TOptions extends OperationOptions> extends OperationsBase<TOptions> {
   constructor(
@@ -32,7 +34,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
     };
 
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<TestItem>({
-      accessToken: params.accessToken,
+      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getTestListUrl({ urlParams: params.urlParams }),
       entityCollectionAccessor,
     }));
@@ -48,7 +50,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
   public async getSingle(params: ParamsToGetTest): Promise<TestDetails> {
     const { accessToken, testId } = params;
     const response = await this.sendGetRequest<ResponseFromGetTest>({
-      accessToken,
+      accessToken: accessToken ? accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleTestUrl({ testId }),
     });
     return response.test;
@@ -61,10 +63,17 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    * @returns {Promise<Test>} newly created Test. See {@link Test}.
    */
   public async create(params: ParamsToCreateTest): Promise<Test> {
+    const body = {
+      projectId: params.projectId,
+      displayName: params.displayName,
+      description: params.description,
+      stopExecutionOnFailure: params.stopExecutionOnFailure,
+      rules: params.rules,
+    };
     const response = await this.sendPostRequest<ResponseFromCreateTest>({
-      accessToken: params.accessToken,
+      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.createTestUrl(),
-      body: params.createTestBody,
+      body,
     });
 
     return response.test;
@@ -77,10 +86,16 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    * @returns {Promise<Test>} newly updated Test. See {@link Test}.
    */
   public async update(params: ParamsToUpdateTest): Promise<Test> {
+    const body = {
+      displayName: params.displayName,
+      description: params.description,
+      stopExecutionOnFailure: params.stopExecutionOnFailure,
+      rules: params.rules,
+    };
     const response = await this.sendPutRequest<ResponseFromUpdateTest>({
-      accessToken: params.accessToken,
+      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.updateTestUrl(params),
-      body: params.updateTestBody,
+      body,
     });
 
     return response.test;
@@ -92,11 +107,45 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    * @param {ParamsToRunTest} params parameters for this operation. See {@link ParamsToRunTest}.
    * @returns {Promise<Run>} newly started Run. See {@link Run}.
    */
-  public async runTest(params: ParamsToRunTest): Promise<Run> {
+  public async runTest(params: ParamsToRunTest): Promise<Run | undefined> {
+    // If namedVersionId is not specified, then try to get latest version as default
+    if (params.namedVersionId === undefined) {
+      const iModelsClient: IModelsClient = new IModelsClient();
+      let authorization: AuthorizationCallback;
+      if (params.accessToken) {
+        authorization = AccessTokenAdapter.toAuthorizationCallback(params.accessToken);
+      } else if (this._options.accessTokenCallback) {
+        const accessToken = await this._options.accessTokenCallback();
+        authorization = AccessTokenAdapter.toAuthorizationCallback(accessToken);
+      } else {
+        throw new Error(`Access token is required`);
+      }
+      const getNamedVersionListParams: GetNamedVersionListParams = {
+        authorization,
+        iModelId: params.iModelId,
+        urlParams: {
+          $orderBy: {
+            property: NamedVersionOrderByProperty.ChangesetIndex,
+            operator: OrderByOperator.Descending,
+          },
+        },
+      };
+      const namedVersionsIterator: EntityListIterator<MinimalNamedVersion> = iModelsClient.namedVersions.getMinimalList(getNamedVersionListParams);
+      const namedVersions: MinimalNamedVersion[] = await toArray(namedVersionsIterator);
+      if (namedVersions.length === 0)
+        return undefined;
+
+      params.namedVersionId = namedVersions[0].id;
+    }
+    const body = {
+      testId: params.testId,
+      iModelId: params.iModelId,
+      namedVersionId: params.namedVersionId,
+    };
     const response = await this.sendPostRequest<ResponseFromRunTest>({
       accessToken: params.accessToken,
       url: this._options.urlFormatter.runTestUrl(),
-      body: params.runTestBody,
+      body,
     });
 
     return response.run;
@@ -112,7 +161,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
   public async delete(params: ParamsToDeleteTest): Promise<void> {
     const { accessToken, testId } = params;
     await this.sendDeleteRequest<void>({
-      accessToken,
+      accessToken: accessToken ? accessToken : await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteTestUrl({ testId }),
     });
   }

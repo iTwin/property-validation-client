@@ -4,6 +4,7 @@
 *--------------------------------------------------------------------------------------------*/
 import type { AccessToken } from "@itwin/core-bentley";
 import { getAccessTokenFromBackend, TestUserCredentials, TestUsers } from "@itwin/oidc-signin-tool/lib/cjs/frontend";
+import { AccessTokenCallback } from "../base/interfaces/CommonInterfaces";
 
 /** Basic configuration used by all tests
  */
@@ -16,5 +17,9 @@ export class TestConfig {
   /** Login the specified user and return the AuthorizationToken */
   public static async getAccessToken(user: TestUserCredentials = TestUsers.regular): Promise<AccessToken> {
     return getAccessTokenFromBackend(user);
+  }
+
+  public static getAccessTokenCallback(): AccessTokenCallback {
+    return async () => this.getAccessToken();
   }
 }

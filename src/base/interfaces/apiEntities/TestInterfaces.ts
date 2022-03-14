@@ -65,32 +65,6 @@ export interface ResponseFromGetTestList extends CollectionResponse {
   tests: TestItem[];
 }
 
-/** Create Test API request. */
-export interface RequestToCreateTest {
-  /** Project id to associate with test. */
-  projectId: string;
-  /** Test display name. */
-  displayName: string;
-  /** Test description. */
-  description: string;
-  /** Stop execution on failure flag. */
-  stopExecutionOnFailure: boolean;
-  /** Array of rule ids to associate with test. */
-  rules: string[];
-}
-
-/** Update Test API request. */
-export interface RequestToUpdateTest {
-  /** Test display name. */
-  displayName: string;
-  /** Test description. */
-  description: string;
-  /** Stop execution on failure flag. */
-  stopExecutionOnFailure: boolean;
-  /** Array of rule ids to associate with test. */
-  rules: string[];
-}
-
 export interface TestSelfLink {
   /** Link to get created test. */
   self: Link;
@@ -119,16 +93,6 @@ export interface ResponseFromCreateTest {
 
 /** Create Test API Response. */
 export type ResponseFromUpdateTest = ResponseFromCreateTest;
-
-/** Run test API request. */
-export interface RequestToRunTest {
-  /** Test id. */
-  testId: string;
-  /** iModel id. */
-  iModelId: string;
-  /** Named version id. */
-  namedVersionId: string;
-}
 
 export interface RunLink {
   /** Link to get Run. */

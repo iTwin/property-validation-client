@@ -11,10 +11,12 @@ export interface ApiOptions {
   version?: string;
 }
 
+export type AccessTokenCallback = () => Promise<string>;
+
 /** Authorization data parameter. This interface is extended by all other specific operation parameter interfaces. */
 export interface AuthorizationParam {
   /** Authorization token. eg: 'Bearer ey...'*/
-  accessToken: string;
+  accessToken?: string;
 }
 
 /** Common url parameters that are supported for all entity list requests. */

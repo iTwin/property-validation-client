@@ -1,4 +1,4 @@
-# @iTwin/property-validation-client
+# Property Validation Client Library
 
 Copyright © Bentley Systems, Incorporated. All rights reserved. See [LICENSE.md](./LICENSE.md) for license terms and full copyright notice.
 
@@ -6,9 +6,23 @@ Copyright © Bentley Systems, Incorporated. All rights reserved. See [LICENSE.md
 
 If you have questions, or wish to contribute to iTwin.js, see our [Contributing guide](./CONTRIBUTING.md).
 
-## Description
+## About this Repository
 
 Contains the __@itwin/property-validation-client__ package that wraps sending requests to the validation service. Visit the [Property Validation API](https://developer.bentley.com/apis/validation/) for more documentation on the validation service.
+
+## Environment Variables
+
+```
+# ---- Optional URL prefix for dev/qa environments ----
+IMJS_URL_PREFIX=""
+
+# ----Authorization for running tests ----
+IMJS_OIDC_BROWSER_TEST_CLIENT_ID=""
+IMJS_OIDC_BROWSER_TEST_REDIRECT_URI=""
+IMJS_OIDC_BROWSER_TEST_SCOPES=""
+IMJS_TEST_REGULAR_USER_NAME=""
+IMJS_TEST_REGULAR_USER_PASSWORD=""
+```
 
 ## Usage examples
 
@@ -32,14 +46,32 @@ async function printRuleTemplateIds(accessToken: string, projectId: string): Pro
 }
 ```
 
+/** Function that queries for a rule template by function name and prints its id to the console. */
+async function printRuleTemplateId(accessToken: string, projectId: string, functionName: string): Promise<void> {
+  const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
+  const params: ParamsToGetTemplate = {
+    accessToken,
+    functionName,
+    urlParams: {
+      projectId
+    }
+  };
+
+  const template: RuleTemplate = await propertyValidationClient.templates.getSingle(params);
+
+  console.log(template.id);
+}
+```
+
 ### Create property validation rule
 ```typescript
-import { ParamsToCreateRule, PropertyValidationClient, RequestToCreateRule, Rule } from "@itwin/property-validation-client";
+import { ParamsToCreateRule, PropertyValidationClient, Rule } from "@itwin/property-validation-client";
 
 /** Function that creates a new property validation rule and prints its id to the console. */
 async function createPropertyValidationRule(accessToken: string, templateId: string): Promise<void> {
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
-  const createRuleBody: RequestToCreateRule = {
+  const params: ParamsToCreateRule = {
+    accessToken,
     templateId: templateId,
     displayName: "TestRule1",
     description: "Test rule 1",
@@ -53,10 +85,6 @@ async function createPropertyValidationRule(accessToken: string, templateId: str
       upperBound: "2"
     }
   };
-  const params: ParamsToCreateRule = {
-    accessToken,
-    createRuleBody
-  };
   const rule: Rule = await propertyValidationClient.rules.create(params);
 
   console.log(rule.id);
@@ -65,23 +93,20 @@ async function createPropertyValidationRule(accessToken: string, templateId: str
 
 ### Update property validation rule
 ```typescript
-import { ParamsToUpdateRule, PropertyValidationClient, RequestToUpdateRule, Rule } from "@itwin/property-validation-client";
+import { ParamsToUpdateRule, PropertyValidationClient, Rule } from "@itwin/property-validation-client";
 
 /** Function that updates a new property validation rule and prints its id to the console. */
 async function updatePropertyValidationRule(accessToken: string, ruleId: string): Promise<void> {
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
-  const updateRuleBody: RequestToUpdateRule = {
+  const params: ParamsToUpdateRule = {
+    accessToken,
+    ruleId: ruleId,
     displayName: "TestRule1 - updated",
     description: "Test rule 1",
     severity: "high",
     ecSchema: "ArchitecturalPhysical",
     ecClass: "Door",
     whereClause: "Roll = '10'"
-  };
-  const params: ParamsToUpdateRule = {
-    accessToken,
-    ruleId: ruleId,
-    updateRuleBody
   };
   const rule: Rule = await propertyValidationClient.rules.update(params);
 
@@ -143,21 +168,18 @@ async function deletePropertyValidationRule(accessToken: string, ruleId: string)
 
 ### Create property validation test
 ```typescript
-import { ParamsToCreateTest, PropertyValidationClient, RequestToCreateTest, Test } from "@itwin/property-validation-client";
+import { ParamsToCreateTest, PropertyValidationClient, Test } from "@itwin/property-validation-client";
 
 /** Function that creates a new property validation test and prints its id to the console. */
 async function createPropertyValidationTest(accessToken: string, projectId: string, rules: string[]): Promise<void> {
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
-  const createTestBody: RequestToCreateTest = {
+  const params: ParamsToCreateTest = {
+    accessToken,
     projectId,
     displayName: "Test1",
     description: "Test 1",
     stopExecutionOnFailure: false,
     rules,
-  };
-  const params: ParamsToCreateTest = {
-    accessToken,
-    createTestBody
   };
   const test: Test = await propertyValidationClient.tests.create(params);
 
@@ -167,21 +189,18 @@ async function createPropertyValidationTest(accessToken: string, projectId: stri
 
 ### Update property validation test
 ```typescript
-import { ParamsToUpdateTest, PropertyValidationClient, RequestToUpdateTest, Test } from "@itwin/property-validation-client";
+import { ParamsToUpdateTest, PropertyValidationClient, Test } from "@itwin/property-validation-client";
 
 /** Function that updates a new property validation test and prints its id to the console. */
 async function updatePropertyValidationTest(accessToken: string, testId: string, rules: string[]): Promise<void> {
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
-  const updateTestBody: RequestToUpdateTest = {
+  const params: ParamsToUpdateTest = {
+    accessToken,
+    testId,
     displayName: "Test1 - updated",
     description: "Test 1",
     stopExecutionOnFailure: false,
     rules,
-  };
-  const params: ParamsToUpdateTest = {
-    accessToken,
-    testId,
-    updateTestBody
   };
   const test: Test = await propertyValidationClient.tests.update(params);
 
@@ -227,19 +246,16 @@ async function getPropertyValidationTest(accessToken: string, testId: string): P
 
 ### Run property validation test
 ```typescript
-import { ParamsToRunTest, PropertyValidationClient, RequestToRunTest, Run } from "@itwin/property-validation-client";
+import { ParamsToRunTest, PropertyValidationClient, Run } from "@itwin/property-validation-client";
 
 /** Function that runs a property validation test and prints its run id. */
-async function runPropertyValidationTest(accessToken: string, testId: string, iModelId: string, namedVersionId: string): Promise<void> {
+async function runPropertyValidationTest(accessToken: string, testId: string, iModelId: string, namedVersionId?: string): Promise<void> {
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
-  const runTestBody: RequestToRunTest = {
-    testId: testId,
-    iModelId: iModelId,
-    namedVersionId: namedVersionId,
-  };
   const params: ParamsToRunTest = {
     accessToken,
-    runTestBody,
+    testId,
+    iModelId,
+    namedVersionId,   // Optional - defaults to latest
   };
 
   const run: Run = await propertyValidationClient.tests.runTest(params);
