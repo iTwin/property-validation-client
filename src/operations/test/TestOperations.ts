@@ -34,7 +34,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
     };
 
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<TestItem>({
-      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
+      accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getTestListUrl({ urlParams: params.urlParams }),
       entityCollectionAccessor,
     }));
@@ -50,7 +50,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
   public async getSingle(params: ParamsToGetTest): Promise<TestDetails> {
     const { accessToken, testId } = params;
     const response = await this.sendGetRequest<ResponseFromGetTest>({
-      accessToken: accessToken ? accessToken : await this._options.accessTokenCallback!(),
+      accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleTestUrl({ testId }),
     });
     return response.test;
@@ -71,7 +71,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       rules: params.rules,
     };
     const response = await this.sendPostRequest<ResponseFromCreateTest>({
-      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
+      accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.createTestUrl(),
       body,
     });
@@ -93,7 +93,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       rules: params.rules,
     };
     const response = await this.sendPutRequest<ResponseFromUpdateTest>({
-      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
+      accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.updateTestUrl(params),
       body,
     });
@@ -143,7 +143,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       namedVersionId: params.namedVersionId,
     };
     const response = await this.sendPostRequest<ResponseFromRunTest>({
-      accessToken: params.accessToken,
+      accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.runTestUrl(),
       body,
     });
@@ -161,7 +161,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
   public async delete(params: ParamsToDeleteTest): Promise<void> {
     const { accessToken, testId } = params;
     await this.sendDeleteRequest<void>({
-      accessToken: accessToken ? accessToken : await this._options.accessTokenCallback!(),
+      accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteTestUrl({ testId }),
     });
   }

@@ -24,7 +24,7 @@ export class ResultOperations<TOptions extends OperationOptions> extends Operati
   public async get(params: ParamsToGetResult): Promise<ResponseFromGetResult> {
     const { accessToken, resultId } = params;
     const response = await this.sendGetRequest<ResponseFromGetResult>({
-      accessToken: accessToken ? accessToken : await this._options.accessTokenCallback!(),
+      accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getResultUrl({ resultId }),
     });
     return response;

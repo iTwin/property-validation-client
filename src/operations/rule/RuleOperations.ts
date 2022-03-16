@@ -33,7 +33,7 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
     };
 
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<MinimalRule>({
-      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
+      accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
       preferReturn: PreferReturn.Minimal,
       entityCollectionAccessor,
@@ -56,7 +56,7 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
     };
 
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<RuleDetails>({
-      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
+      accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
       entityCollectionAccessor,
@@ -73,7 +73,7 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
   public async getSingle(params: ParamsToGetRule): Promise<RuleDetails> {
     const { accessToken, ruleId } = params;
     const response = await this.sendGetRequest<ResponseFromGetRule>({
-      accessToken: accessToken ? accessToken : await this._options.accessTokenCallback!(),
+      accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleRuleUrl({ ruleId }),
     });
     return response.rule;
@@ -89,7 +89,7 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
   public async delete(params: ParamsToDeleteRule): Promise<void> {
     const { accessToken, ruleId } = params;
     await this.sendDeleteRequest<void>({
-      accessToken: accessToken ? accessToken : await this._options.accessTokenCallback!(),
+      accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteRuleUrl({ ruleId }),
     });
   }
@@ -113,7 +113,7 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
       functionParameters: params.functionParameters,
     };
     const response = await this.sendPostRequest<ResponseFromCreateRule>({
-      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
+      accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.createRuleUrl(),
       body,
     });
@@ -137,7 +137,7 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
       severity: params.severity,
     };
     const response = await this.sendPutRequest<ResponseFromUpdateRule>({
-      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
+      accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.updateRuleUrl(params),
       body,
     });

@@ -33,7 +33,7 @@ export class TemplateOperations<TOptions extends OperationOptions> extends Opera
     };
 
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<RuleTemplate>({
-      accessToken: params.accessToken ? params.accessToken : await this._options.accessTokenCallback!(),
+      accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getTemplateListUrl({ urlParams: params.urlParams }),
       entityCollectionAccessor,
     }));
@@ -48,7 +48,7 @@ export class TemplateOperations<TOptions extends OperationOptions> extends Opera
     const { accessToken, urlParams } = params;
     const functionName = params.functionName.toLowerCase();
     const paramsToGetTemplateList: ParamsToGetTemplateList = {
-      accessToken: accessToken ? accessToken : await this._options.accessTokenCallback!(),
+      accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       urlParams,
     };
 

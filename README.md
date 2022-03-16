@@ -10,20 +10,6 @@ If you have questions, or wish to contribute to iTwin.js, see our [Contributing 
 
 Contains the __@itwin/property-validation-client__ package that wraps sending requests to the validation service. Visit the [Property Validation API](https://developer.bentley.com/apis/validation/) for more documentation on the validation service.
 
-## Environment Variables
-
-```
-# ---- Optional URL prefix for dev/qa environments ----
-IMJS_URL_PREFIX=""
-
-# ----Authorization for running tests ----
-IMJS_OIDC_BROWSER_TEST_CLIENT_ID=""
-IMJS_OIDC_BROWSER_TEST_REDIRECT_URI=""
-IMJS_OIDC_BROWSER_TEST_SCOPES=""
-IMJS_TEST_REGULAR_USER_NAME=""
-IMJS_TEST_REGULAR_USER_PASSWORD=""
-```
-
 ## Usage examples
 
 ### Get all property validation rule templates
@@ -72,7 +58,7 @@ async function createPropertyValidationRule(accessToken: string, templateId: str
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
   const params: ParamsToCreateRule = {
     accessToken,
-    templateId: templateId,
+    templateId,
     displayName: "TestRule1",
     description: "Test rule 1",
     severity: "medium",
@@ -100,7 +86,7 @@ async function updatePropertyValidationRule(accessToken: string, ruleId: string)
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
   const params: ParamsToUpdateRule = {
     accessToken,
-    ruleId: ruleId,
+    ruleId,
     displayName: "TestRule1 - updated",
     description: "Test rule 1",
     severity: "high",
