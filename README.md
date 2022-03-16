@@ -32,6 +32,10 @@ async function printRuleTemplateIds(accessToken: string, projectId: string): Pro
 }
 ```
 
+### Get property validation rule template by function name
+```typescript
+import { ParamsToGetTemplate, PropertyValidationClient, RuleTemplate } from "@itwin/property-validation-client";
+
 /** Function that queries for a rule template by function name and prints its id to the console. */
 async function printRuleTemplateId(accessToken: string, projectId: string, functionName: string): Promise<void> {
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
