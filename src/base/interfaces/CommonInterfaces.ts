@@ -87,7 +87,7 @@ export interface SchemaList {
   /** Schema name. */
   name: string;
   /** Schema label. */
-  label: string;
+  label?: string;
   /** List of entities in schema. */
   entities: ClassList;
 }
@@ -97,9 +97,13 @@ export interface ClassList {
   /** Class name. */
   name: string;
   /** Class label. */
-  label: string;
-  /** List of entities in schema. */
-  entities: PropertyList;
+  label?: string;
+  /** List of Class properties. */
+  properties?: PropertyList;
+  /** List of aspect properties of the Class. */
+  aspects?: PropertyList;
+  /** List of type definition properties of the Class. */
+  typeDefinitions?: PropertyList;
 }
 
 /** List of properties to process (multi-property validation). */
@@ -107,5 +111,5 @@ export interface PropertyList {
   /** Property name. */
   name: string;
   /** Property label. */
-  label: string;
+  label?: string;
 }

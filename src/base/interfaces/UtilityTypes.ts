@@ -20,7 +20,3 @@ export interface EntityCollectionPage<TEntity> {
 export type RecursiveRequired<T> = Required<T> & { [P in keyof T]: RecursiveRequired<T[P]>; };
 /** Function to query an entity page. */
 export type EntityPageQueryFunc<TEntity> = () => Promise<EntityCollectionPage<TEntity>>;
-/** Wrapper type that makes all properties in `T` optional except for the one specified. */
-export type OptionalExceptFor<T, TRequired extends keyof T> = Partial<T> & Pick<T, TRequired>;
-/** Wrapper type that requires at least one property of `T` to be set. */
-export type AtLeastOneProperty<T> = { [P in keyof T]: OptionalExceptFor<T, P> }[keyof T];

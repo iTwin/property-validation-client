@@ -18,7 +18,7 @@ export interface RuleUserInfoLinks {
 }
 
 export interface RuleSelfLink {
-  /** Link to get create/updated rule. */
+  /** Link to get created/updated rule. */
   self: Link;
 }
 
@@ -40,7 +40,7 @@ export interface RuleDetails {
   displayName: string;
   /** Rule description. */
   description: string;
-  /** Rule create date/time. */
+  /** Rule creation date/time. */
   creationDateTime: string;
   /** Rule modification date/time. */
   modificationDateTime: string;

@@ -25,6 +25,8 @@ export interface RuleList {
 
 /** Get Result API response. */
 export interface ResponseFromGetResult {
+  /* Results of property validation test run */
   result: ResultDetails[];
+  /* List of rules referenced in ResultDetails by ruleIndex */
   ruleList: RuleList[];
 }

@@ -34,7 +34,7 @@ export interface RunDetails {
   executedDateTime: string;
   /** Number of issues found during test run. */
   count: string;
-  /** The name of the user that started the run.. */
+  /** The name of the user that started the run. */
   userName: string;
   /** The status of the validation run. One of 'queued', 'started', 'completed', 'failed', 'downloadingIModel', 'storingResults', 'inProgress', 'completedToLimit', 'cancelled'. */
   status: string;

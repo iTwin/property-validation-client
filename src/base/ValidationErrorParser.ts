@@ -64,16 +64,11 @@ export class ValidationErrorParser {
     if (!errorCode)
       return ValidationErrorCode.Unrecognized;
 
-    const adjustedErrorCode = ValidationErrorParser.adjustErrorCodeCaseToMatchEnum(errorCode);
-    let parsedCode: ValidationErrorCode | undefined = ValidationErrorCode[adjustedErrorCode as keyof typeof ValidationErrorCode];
+    let parsedCode: ValidationErrorCode | undefined = ValidationErrorCode[errorCode as keyof typeof ValidationErrorCode];
     if (!parsedCode)
       parsedCode = ValidationErrorCode.Unrecognized;
 
     return parsedCode;
-  }
-
-  private static adjustErrorCodeCaseToMatchEnum(errorCode: string): string {
-    return errorCode.replace("validation", "Validation");
   }
 
   private static parseDetails(details: ValidationApiErrorDetail[] | undefined): ValidationErrorDetail[] | undefined {

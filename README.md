@@ -10,6 +10,28 @@ If you have questions, or wish to contribute to iTwin.js, see our [Contributing 
 
 Contains the __@itwin/property-validation-client__ package that wraps sending requests to the validation service. Visit the [Property Validation API](https://developer.bentley.com/apis/validation/) for more documentation on the validation service.
 
+## Authorization options
+
+There are two ways to provide the authorization token for the wrapper functions:
+
+. Set accessToken in parameters object every time a wrapper function is called (as shown in usage examples below).
+
+2. Provide a callback function to the PropertyValidationClient constructor. This callback will be called by the wrapper function if the accessToken parameter in Option 1 is not provided.
+
+```typescript
+    import { PropertyValidationClient, PropertyValidationClientOptions } from "@itwin/property-validation-client";
+
+    public static initWrapperClient(accessToken: string, projectId: string): PropertyValidationClient {
+      const options: PropertyValidationClientOptions = {};
+      const accessTokenCallback = async () => this.getAccessToken();
+      const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient(options, accessTokenCallback);
+    }
+
+    public static async getAccessToken(): Promise<string> {
+      return "Bearer ey..."
+    }
+```
+
 ## Usage examples
 
 ### Get all property validation rule templates

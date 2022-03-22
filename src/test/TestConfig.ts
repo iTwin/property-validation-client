@@ -2,7 +2,6 @@
 * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
-import type { AccessToken } from "@itwin/core-bentley";
 import { getAccessTokenFromBackend, TestUserCredentials, TestUsers } from "@itwin/oidc-signin-tool/lib/cjs/frontend";
 import { AccessTokenCallback } from "../base/interfaces/CommonInterfaces";
 
@@ -15,7 +14,7 @@ export class TestConfig {
   public static readonly namedVersionId: string = "381a7791-bd65-4aa1-aab6-83737a7b0bb4";
 
   /** Login the specified user and return the AuthorizationToken */
-  public static async getAccessToken(user: TestUserCredentials = TestUsers.regular): Promise<AccessToken> {
+  public static async getAccessToken(user: TestUserCredentials = TestUsers.regular): Promise<string> {
     return getAccessTokenFromBackend(user);
   }
 
