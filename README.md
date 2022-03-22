@@ -14,7 +14,7 @@ Contains the __@itwin/property-validation-client__ package that wraps sending re
 
 There are two ways to provide the authorization token for the wrapper functions:
 
-. Set accessToken in parameters object every time a wrapper function is called (as shown in usage examples below).
+1. Set accessToken in parameters object every time a wrapper function is called (as shown in usage examples below).
 
 2. Provide a callback function to the PropertyValidationClient constructor. This callback will be called by the wrapper function if the accessToken parameter in Option 1 is not provided.
 
