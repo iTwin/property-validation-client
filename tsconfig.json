@@ -5,6 +5,15 @@
     "esModuleInterop": true,
     "sourceMap": true
   },
+  "typedocOptions": {
+    "name": "property-validation-client",
+    "entryPoints": ["src/PropertyValidationClient.ts", "src/operations/index.ts", "src/base/index.ts"],
+    "out": "docs",
+    "theme": "markdown",
+    "excludePrivate": true,
+    "excludeProtected": true,
+    "excludeExternals": true,
+  },
   "include": [
     "./src/**/*.ts"
   ],
