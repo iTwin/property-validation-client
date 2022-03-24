@@ -7,7 +7,7 @@
   },
   "typedocOptions": {
     "name": "property-validation-client",
-    "entryPoints": ["src/PropertyValidationClient.ts", "src/operations/index.ts", "src/base/index.ts"],
+    "entryPoints": ["src/property-validation-client.ts"],
     "out": "docs",
     "theme": "markdown",
     "excludePrivate": true,
