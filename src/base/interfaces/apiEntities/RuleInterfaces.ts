@@ -18,7 +18,7 @@ export interface RuleUserInfoLinks {
 }
 
 export interface RuleSelfLink {
-  /** Link to get create/updated rule. */
+  /** Link to get created/updated rule. */
   self: Link;
 }
 
@@ -28,7 +28,6 @@ export interface MinimalRule {
   id: string;
   /** Rule display name. */
   displayName: string;
-  /** Rule detail link. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RuleDetailLink;
 }
@@ -41,7 +40,7 @@ export interface RuleDetails {
   displayName: string;
   /** Rule description. */
   description: string;
-  /** Rule create date/time. */
+  /** Rule creation date/time. */
   creationDateTime: string;
   /** Rule modification date/time. */
   modificationDateTime: string;
@@ -61,71 +60,32 @@ export interface RuleDetails {
   functionName: string;
   /** Data type of Rule ('property', 'aspect', 'typeDefinition'). */
   dataType: string;
-  /** Rule user info links. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RuleUserInfoLinks;
 }
 
-/** Single Rule API response. */
-export interface GetRuleResponse {
+/** Get Rule API response. */
+export interface ResponseFromGetRule {
   rule: RuleDetails;
 }
 
 /** Minimal Rule list API response. */
-export interface GetMinimalRulesResponse extends CollectionResponse {
+export interface ResponseFromGetRuleListMinimal extends CollectionResponse {
   rules: MinimalRule[];
 }
 
 /** Representation Rule list API response. */
-export interface GetRulesResponse extends CollectionResponse {
+export interface ResponseFromGetRuleList extends CollectionResponse {
   rules: RuleDetails[];
 }
 
-/** Create Rule API request. */
-export interface CreateRuleRequest {
-  /** Rule template id. */
-  templateId: string;
-  /** Rule display name. */
-  displayName: string;
-  /** Rule description. */
-  description: string;
-  /** EC class of Rule. */
-  ecClass: string;
-  /** EC schema of Rule. */
-  ecSchema: string;
-  /** Where clause of Rule. */
-  whereClause: string;
-  /** Rule severity ('low', 'medium', 'high', 'veryHigh'). */
-  severity: string;
-  /** Data type of Rule ('property', 'aspect', 'typeDefinition'). */
-  dataType: string;
-  /** Rule function parameters. */
-  functionParameters: FunctionParameters;
-}
-
-/** Create Rule API request. */
-export interface UpdateRuleRequest {
-  /** Rule display name. */
-  displayName: string;
-  /** Rule description. */
-  description: string;
-  /** EC class of Rule. */
-  ecClass: string;
-  /** EC schema of Rule. */
-  ecSchema: string;
-  /** Where clause of Rule. */
-  whereClause: string;
-  /** Rule severity ('low', 'medium', 'high', 'veryHigh'). */
-  severity: string;
-}
-
 /** Create Rule API Response. */
-export interface CreateRuleResponse {
+export interface ResponseFromCreateRule {
   rule: Rule;
 }
 
 /** Create Rule API Response. */
-export type UpdateRuleResponse = CreateRuleResponse;
+export type ResponseFromUpdateRule = ResponseFromCreateRule;
 
 /** Create/update Rule Response object. */
 export interface Rule {
@@ -149,7 +109,6 @@ export interface Rule {
   whereClause?: string;
   /** Data type of Rule ('property', 'aspect', 'typeDefinition'). */
   dataType: string;
-  /** Rule self link. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RuleSelfLink;
 }

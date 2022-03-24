@@ -7,6 +7,7 @@ const path = require("path");
 const glob = require("glob");
 const webpack = require("webpack");
 const fs = require("fs");
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 
 /** Loads the provided `.env` file into process.env */
 function loadEnv(envFile) {
@@ -34,7 +35,7 @@ function createConfig(shouldInstrument) {
     output: {
       path: path.resolve(clientsLib, "test/webpack/"),
       filename: "bundled-tests.js",
-      devtoolModuleFilenameTemplate: "file:///[absolute-resource-path]"
+      devtoolModuleFilenameTemplate: "file:///[absolute-resource-path]",
     },
     devtool: "nosources-source-map",
     module: {
@@ -43,23 +44,23 @@ function createConfig(shouldInstrument) {
         // requires for fs that cause it to fail even though the fs dependency
         // is not used.
         /draco_decoder_nodejs.js$/,
-        /draco_encoder_nodejs.js$/
+        /draco_encoder_nodejs.js$/,
       ],
       rules: [
         {
           test: /\.js$/,
           use: "source-map-loader",
-          enforce: "pre"
+          enforce: "pre",
         },
         {
           test: /azure-storage|AzureFileHandler|UrlFileHandler/,
-          use: "null-loader"
+          use: "null-loader",
         },
-      ]
+      ],
     },
     stats: "errors-only",
     optimization: {
-      nodeEnv: "production"
+      nodeEnv: "production",
     },
     externals: {
       electron: "commonjs electron",
@@ -76,8 +77,9 @@ function createConfig(shouldInstrument) {
             env[key] = JSON.stringify(process.env[key]);
             return env;
           }, {}),
-      })
-    ]
+      }),
+      new NodePolyfillPlugin(),
+    ],
   };
 
   if (shouldInstrument) {
@@ -88,7 +90,7 @@ function createConfig(shouldInstrument) {
       exclude: path.join(clientsLib, "test"),
       loader: require.resolve("istanbul-instrumenter-loader"),
       options: {
-        debug: true
+        debug: true,
       },
       enforce: "post",
     });
@@ -100,5 +102,5 @@ function createConfig(shouldInstrument) {
 // Exporting two configs in a array like this actually tells webpack to run twice - once for each config.
 module.exports = [
   // createConfig(true),
-  createConfig(false)
-]
+  createConfig(false),
+];

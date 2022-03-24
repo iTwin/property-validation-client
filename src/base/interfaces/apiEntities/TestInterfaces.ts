@@ -33,7 +33,6 @@ export interface TestItem {
   creationDateTime: string;
   /** Test modification date. */
   modificationDateTime: string;
-  /** Test links. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: TestLinks;
 }
@@ -52,45 +51,18 @@ export interface TestDetails {
   rules: string[];
   /** Stop execution on failure flag. */
   stopExecutionOnFailure: boolean;
-  /** Test links. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: TestLinks;
 }
 
-/** Single Test API response. */
-export interface TestResponse {
+/** Get Test API response. */
+export interface ResponseFromGetTest {
   test: TestDetails;
 }
 
 /** Test list API response. */
-export interface TestsResponse extends CollectionResponse {
+export interface ResponseFromGetTestList extends CollectionResponse {
   tests: TestItem[];
-}
-
-/** Create Test API request. */
-export interface CreateTestRequest {
-  /** Project id. */
-  projectId: string;
-  /** Test display name. */
-  displayName: string;
-  /** Test description. */
-  description: string;
-  /** Stop execution on failure flag. */
-  stopExecutionOnFailure: boolean;
-  /** Array of rule ids to associate with test. */
-  rules: string[];
-}
-
-/** Update Test API request. */
-export interface UpdateTestRequest {
-  /** Test display name. */
-  displayName: string;
-  /** Test description. */
-  description: string;
-  /** Stop execution on failure flag. */
-  stopExecutionOnFailure: boolean;
-  /** Array of rule ids to associate with test. */
-  rules: string[];
 }
 
 export interface TestSelfLink {
@@ -110,28 +82,17 @@ export interface Test {
   rules: string[];
   /** Stop execution on failure flag. */
   stopExecutionOnFailure: boolean;
-  /** Test links. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: TestSelfLink;
 }
 
 /** Create Test API Response. */
-export interface CreateTestResponse {
+export interface ResponseFromCreateTest {
   test: Test;
 }
 
 /** Create Test API Response. */
-export type UpdateTestResponse = CreateTestResponse;
-
-/** Run test API request. */
-export interface RunTestRequest {
-  /** Test id. */
-  testId: string;
-  /** iModel id. */
-  iModelId: string;
-  /** Named version id. */
-  namedVersionId: string;
-}
+export type ResponseFromUpdateTest = ResponseFromCreateTest;
 
 export interface RunLink {
   /** Link to get Run. */
@@ -142,12 +103,11 @@ export interface RunLink {
 export interface Run {
   /** Run id. */
   id: string;
-  /** Run link. */
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RunLink;
 }
 
 /** Run test API Response. */
-export interface RunTestResponse {
+export interface ResponseFromRunTest {
   run: Run;
 }

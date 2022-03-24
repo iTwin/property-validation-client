@@ -23,8 +23,10 @@ export interface RuleList {
   displayName: string;
 }
 
-/** Single Result API response. */
-export interface GetResultResponse {
+/** Get Result API response. */
+export interface ResponseFromGetResult {
+  /* Results of property validation test run */
   result: ResultDetails[];
+  /* List of rules referenced in ResultDetails by ruleIndex */
   ruleList: RuleList[];
 }

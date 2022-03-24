@@ -3,7 +3,7 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import { Constants } from "../Constants";
-import { AuthorizationParam, CollectionResponse, PreferReturn } from "./interfaces/CommonInterfaces";
+import { AccessTokenCallback, AuthorizationParam, CollectionResponse, PreferReturn } from "./interfaces/CommonInterfaces";
 import { Dictionary, EntityCollectionPage } from "./interfaces/UtilityTypes";
 import { RestClient } from "./rest/RestClient";
 
@@ -14,6 +14,7 @@ type SendPatchRequestParams = SendPostRequestParams;
 type SendDeleteRequestParams = AuthorizationParam & { url: string };
 
 export interface OperationsBaseOptions {
+  accessTokenCallback?: AccessTokenCallback;
   restClient: RestClient;
   api: { version: string };
 }
@@ -76,8 +77,11 @@ export class OperationsBase<TOptions extends OperationsBaseOptions> {
 
   private async formHeaders(params: AuthorizationParam & { preferReturn?: PreferReturn, containsBody?: boolean }): Promise<Dictionary<string>> {
     const headers: Dictionary<string> = {};
-    const authorizationInfo = await params.authorization();
-    headers[Constants.headers.authorization] = `${authorizationInfo.scheme} ${authorizationInfo.token}`;
+    if (params.accessToken)
+      headers[Constants.headers.authorization] = params.accessToken;
+    else if (this._options.accessTokenCallback) {
+      headers[Constants.headers.authorization] = await this._options.accessTokenCallback();
+    }
     headers[Constants.headers.accept] = `application/vnd.bentley.${this._options.api.version}+json`;
 
     if (params.preferReturn)

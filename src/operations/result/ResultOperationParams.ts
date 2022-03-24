@@ -5,7 +5,7 @@
 import { AuthorizationParam } from "../../base/interfaces/CommonInterfaces";
 
 /** Parameters for get Result operation. */
-export interface GetResultParams extends AuthorizationParam {
+export interface ParamsToGetResult extends AuthorizationParam {
   /** Result id. */
   resultId: string;
 }

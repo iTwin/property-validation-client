@@ -18,7 +18,8 @@ export interface MinimalRun {
   id: string;
   /** Run display name. */
   displayName: string;
-  /** Run detail link. */
+  /** Result id. */
+  resultId: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RunDetailLink;
 }
@@ -33,26 +34,27 @@ export interface RunDetails {
   executedDateTime: string;
   /** Number of issues found during test run. */
   count: string;
-  /** The name of the user that started the run.. */
+  /** The name of the user that started the run. */
   userName: string;
   /** The status of the validation run. One of 'queued', 'started', 'completed', 'failed', 'downloadingIModel', 'storingResults', 'inProgress', 'completedToLimit', 'cancelled'. */
   status: string;
-  /** Run user info links. */
+  /** Result id. */
+  resultId: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RunDetailLink;
 }
 
 /** Single Run API response. */
-export interface GetRunResponse {
+export interface ResponseFromGetRun {
   run: RunDetails;
 }
 
 /** Minimal Run list API response. */
-export interface GetMinimalRunsResponse {
+export interface ResponseFromGetRunListMinimal {
   runs: MinimalRun[];
 }
 
 /** Representation Run list API response. */
-export interface GetRunsResponse {
+export interface ResponseFromGetRunList {
   runs: RunDetails[];
 }

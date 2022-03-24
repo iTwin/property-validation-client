@@ -24,7 +24,13 @@ export enum ValidationErrorCode {
   InvalidRequestBody = "InvalidRequestBody",
   MissingRequestBody = "MissingRequestBody",
   ProjectNotFound = "ProjectNotFound",
-  IModelNotFound = "iModelNotFound"
+  IModelNotFound = "iModelNotFound",
+  NamedVersionNotFound = "NamedVersionNotFound",
+  ValidationResultNotFound = "ValidationResultNotFound",
+  ValidationRuleNotFound = "ValidationRuleNotFound",
+  ValidationRuleTemplateNotFound = "ValidationRuleTemplateNotFound",
+  ValidationRunNotFound = "ValidationRunNotFound",
+  ValidationTestNotFound = "ValidationTestNotFound"
 }
 
 /** Error detail information. */

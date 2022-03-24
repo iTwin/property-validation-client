@@ -4,7 +4,6 @@
  *--------------------------------------------------------------------------------------------*/
 export * from "./OperationsBase";
 export * from "./ValidationErrorParser";
-export * from "./CommonFunctions";
 export * from "./interfaces/CommonInterfaces";
 export * from "./interfaces/UtilityTypes";
 export * from "./interfaces/ValidationErrorInterfaces";
