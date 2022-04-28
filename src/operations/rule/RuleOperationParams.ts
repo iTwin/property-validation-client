@@ -4,7 +4,6 @@
  *--------------------------------------------------------------------------------------------*/
 import { AuthorizationParam, CollectionRequestParams, FunctionParameters } from "../../base/interfaces/CommonInterfaces";
 
-
 /** Url parameters supported in Rule list query. */
 export interface ParamsToGetRuleListUrl extends CollectionRequestParams {
   /** Filters Rules for a specific project. */
