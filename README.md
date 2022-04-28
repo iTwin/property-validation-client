@@ -8,7 +8,7 @@ If you have questions, or wish to contribute to iTwin.js, see our [Contributing 
 
 ## About this Repository
 
-Contains the __@itwin/property-validation-client__ package that wraps sending requests to the validation service. Visit the [Property Validation API](https://developer.bentley.com/apis/validation/) for more documentation on the validation service.
+The __@itwin/property-validation-client__ package consists of thin wrapper functions for sending requests to the iTwin Validation API. There are CRUD functions for the four components of validation: rules, tests, runs and results. Define validation criteria in rules, add rules to tests, run the tests for versions of iModels, and retrieve the validation results. Visit the [Property Validation API](https://developer.bentley.com/apis/validation/) for more details.
 
 ## Authorization options
 
