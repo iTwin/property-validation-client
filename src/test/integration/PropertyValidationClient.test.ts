@@ -8,7 +8,7 @@ import { EntityListIterator } from "../../base/iterators/EntityListIterator";
 import { PropertyValidationClient, PropertyValidationClientOptions } from "../../PropertyValidationClient";
 import { TestConfig } from "../TestConfig";
 import { MinimalRule, MinimalRun, ResponseFromGetResult, Rule, RuleDetails, RuleTemplate, Run, RunDetails, Test, TestDetails, TestItem } from "../../base";
-import { ParamsToCreateRule, ParamsToCreateTest, ParamsToDeleteRule, ParamsToDeleteRun, ParamsToDeleteTest, ParamsToGetResult, ParamsToGetRule, ParamsToGetRuleList, ParamsToGetRun, ParamsToGetRunList, ParamsToGetTemplate, ParamsToGetTemplateList, ParamsToGetTest, ParamsToGetTestList, ParamsToRunTest, ParamsToUpdateRule, ParamsToUpdateTest } from "../../operations";
+import { ParamsToCreateRule, ParamsToCreateTest, ParamsToDeleteRule, ParamsToDeleteRun, ParamsToDeleteTest, ParamsToGetResult, ParamsToGetRule, ParamsToGetRuleList, ParamsToGetRun, ParamsToGetRunList, ParamsToGetTemplateList, ParamsToGetTest, ParamsToGetTestList, ParamsToRunTest, ParamsToUpdateRule, ParamsToUpdateTest } from "../../operations";
 
 chai.should();
 describe("PropertyValidationClient", async () => {
@@ -31,24 +31,6 @@ describe("PropertyValidationClient", async () => {
 
     // Save id of first template
     propertyValidationClient.templateId = templates[0].id;
-  });
-
-  it("should get a rule template by function name", async () => {
-    const params: ParamsToGetTemplate = {
-      functionName: "PropertyValueDefined",
-      urlParams: {
-        projectId: TestConfig.projectId,
-      },
-    };
-
-    const template: RuleTemplate | null = await propertyValidationClient.templates.getSingle(params);
-
-    // Expect template to be found
-    chai.expect(template).to.not.be.null;
-
-    // Save id of template
-    if (template)
-      propertyValidationClient.templateId = template.id;
   });
 
   it("should create a rule", async () => {
