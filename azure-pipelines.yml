@@ -95,4 +95,4 @@ stages:
         path: '*.tgz'
         artifactName: PropertyValidationClient
         name: PropertyValidationClient
-        dryrun: true
+        dryrun: false
