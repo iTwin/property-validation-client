@@ -29,11 +29,6 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
       url: this._options.urlFormatter.getRunListUrl({ urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
     });
-    // Extract the resultId from the result URL link and return it in the resultId of the response
-    response.runs.forEach((run) => {
-      const tokens = run._links.result.href.split("/");
-      run.resultId = tokens[tokens.length-1];
-    });
     return response.runs;
   }
 
@@ -51,12 +46,6 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
       url: this._options.urlFormatter.getRunListUrl({ urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
     });
-    // Extract the resultId from the result URL link and return it in the resultId of the response
-    response.runs.forEach((run) => {
-      const tokens = run._links.result.href.split("/");
-      run.resultId = tokens[tokens.length-1];
-    });
-
     return response.runs;
   }
 
@@ -73,9 +62,6 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleRunUrl({ runId }),
     });
-    // Extract the resultId from the result URL link and return it in the resultId of the response
-    const tokens = response.run._links.result.href.split("/");
-    response.run.resultId = tokens[tokens.length-1];
     return response.run;
   }
 

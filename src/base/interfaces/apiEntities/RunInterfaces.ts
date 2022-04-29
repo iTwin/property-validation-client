@@ -18,8 +18,6 @@ export interface MinimalRun {
   id: string;
   /** Run display name. */
   displayName: string;
-  /** Result id. */
-  resultId: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RunDetailLink;
 }
