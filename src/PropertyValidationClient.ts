@@ -14,6 +14,7 @@ import { TestOperations } from "./operations/test/TestOperations";
 import { TemplateOperations } from "./operations/template/TemplateOperations";
 import { PropertyValidationApiUrlFormatter } from "./operations/PropertyValidationApiUrlFormatter";
 import { OperationOptions } from "./operations/OperationOptions";
+import { AuthorizationCallback } from "@itwin/imodels-client-management";
 
 /** User-configurable Property Validation client options. */
 export interface PropertyValidationClientOptions {
@@ -96,5 +97,14 @@ export class PropertyValidationClient {
       },
       restClient: options?.restClient ?? new AxiosRestClient(),
     };
+  }
+
+  public static toAuthorizationCallback(accessToken: string): AuthorizationCallback {
+    const splitAccessToken = accessToken.split(" ");
+    const authorization = {
+      scheme: splitAccessToken[0],
+      token: splitAccessToken[1],
+    };
+    return async () => authorization;
   }
 }
