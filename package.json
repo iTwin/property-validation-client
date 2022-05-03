@@ -35,6 +35,7 @@
     "url": "https://github.com/iTwin/property-validation-client"
   },
   "dependencies": {
+    "@itwin/imodels-client-management": "^1.0.1",
     "axios": "^0.21.1"
   },
   "devDependencies": {
@@ -42,7 +43,6 @@
     "@itwin/certa": "~3.0.0",
     "@itwin/core-bentley": "^3.0.0",
     "@itwin/eslint-plugin": "^3.0.0",
-    "@itwin/imodels-client-management": "^1.0.1",
     "@itwin/oidc-signin-tool": "^3.0.0",
     "@itwin/projects-client": "^0.6.0",
     "@types/chai": "^4.1.4",
