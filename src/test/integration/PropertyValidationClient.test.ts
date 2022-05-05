@@ -3,7 +3,6 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 import * as chai from "chai";
-import type { AccessToken } from "@itwin/core-bentley";
 import { take } from "../../base/iterators/IteratorUtilFunctions";
 import { EntityListIterator } from "../../base/iterators/EntityListIterator";
 import { PropertyValidationClient, PropertyValidationClientOptions } from "../../PropertyValidationClient";
@@ -17,17 +16,10 @@ describe("PropertyValidationClient", async () => {
   const accessTokenCallback = TestConfig.getAccessTokenCallback();
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient(options, accessTokenCallback);
 
-  let accessToken: AccessToken;
-  let projectId: string;
-  let iModelId: string;
-
-  before(async () => {
-    accessToken = await TestConfig.getAccessToken();
-    projectId = (await TestConfig.getProjectByName(accessToken, TestConfig.projectName)).id;
-    chai.assert.isDefined(projectId);
-    iModelId = (await TestConfig.getIModelByName(accessToken, projectId, TestConfig.iModelName)).id;
-    chai.assert.isDefined(iModelId);
-  });
+  const projectId: string = process.env.IMJS_TEST_PROJECT_ID ?? "";
+  const iModelId: string = process.env.IMJS_TEST_IMODEL_ID ?? "";
+  chai.assert.isNotEmpty(projectId);
+  chai.assert.isNotEmpty(iModelId);
 
   it("should get a list of rule templates", async () => {
     const params: ParamsToGetTemplateList = {
