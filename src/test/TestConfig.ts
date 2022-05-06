@@ -3,7 +3,7 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 import { getAccessTokenFromBackend, TestUsers } from "@itwin/oidc-signin-tool/lib/cjs/frontend";
-import { AccessTokenCallback } from "../base/interfaces/CommonInterfaces";
+import type { AccessTokenCallback } from "../base/interfaces/CommonInterfaces";
 import type { AccessToken } from "@itwin/core-bentley";
 
 /** Basic configuration used by all tests
@@ -16,6 +16,6 @@ export class TestConfig {
   }
 
   public static getAccessTokenCallback(): AccessTokenCallback {
-    return async () => this.getAccessToken();
+    return async () => TestConfig.getAccessToken();
   }
 }
