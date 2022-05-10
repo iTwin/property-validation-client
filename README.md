@@ -10,6 +10,41 @@ If you have questions, or wish to contribute to iTwin.js, see our [Contributing 
 
 The __@itwin/property-validation-client__ package consists of thin wrapper functions for sending requests to the iTwin Validation API. There are CRUD functions for the four components of validation: rules, tests, runs and results. Define validation criteria in rules, add rules to tests, run the tests for versions of iModels, and retrieve the validation results. Visit the [Property Validation API](https://developer.bentley.com/apis/validation/) for more details.
 
+## Key response types
+- [PropertyValidationClient](./src/PropertyValidationClient.ts#L30)
+- [EntityListIterator](./src/base/iterators/EntityListIterator.ts#L6)
+- [MinimalRule](./src/base/interfaces/apiEntities/RuleInterfaces.ts#L25)
+- [MinimalRun](./src/base/interfaces/apiEntities/RunInterfaces.ts#L15)
+- [ResponseFromGetResult](./src/base/interfaces/apiEntities/ResultInterfaces.ts#L26)
+- [Rule](./src/base/interfaces/apiEntities/RuleInterfaces.ts#L90)
+- [RuleDetails](./src/base/interfaces/apiEntities/RuleInterfaces.ts#L35)
+- [RuleTemplate](./src/base/interfaces/apiEntities/TemplateInterfaces.ts#L7)
+- [Run](./src/base/interfaces/apiEntities/TestInterfaces.ts#L102)
+- [RunDetails](./src/base/interfaces/apiEntities/RunInterfaces.ts#L25)
+- [Test](./src/base/interfaces/apiEntities/TestInterfaces.ts#L73)
+- [TestDetails](./src/base/interfaces/apiEntities/TestInterfaces.ts#L40)
+- [TestItem](./src/base/interfaces/apiEntities/TestInterfaces.ts#L24)
+
+## Key methods
+- [`client.templates.getList(params: ParamsToGetTemplateList): EntityListIterator<RuleTemplate>`](#get-all-property-validation-rule-templates)
+- [`client.rules.create(params: ParamsToCreateRule): Promise<Rule>`](#create-property-validation-rule)
+- [`client.rules.update(params: ParamsToUpdateRule): Promise<Rule>`](#update-property-validation-rule)
+- [`client.rules.getMinimalList(params: ParamsToGetRuleList): EntityListIterator<MinimalRule>`](#get-all-property-validation-rules--minimal)
+- [`client.rules.getRepresentationList(params: ParamsToGetRuleList): EntityListIterator<RuleDetails>`](#get-all-property-validation-rules--detailed)
+- [`client.rules.getSingle(params: ParamsToGetRule): Promise<RuleDetails>`](#get-property-validation-rule)
+- [`client.tests.create(params: ParamsToCreateTest): Promise<Test>`](#create-property-validation-test)
+- [`client.tests.update(params: ParamsToUpdateTest): Promise<Test>`](#update-property-validation-test)
+- [`client.tests.getSingle(params: ParamsToGetTest): Promise<TestDetails>`](#get-property-validation-test)
+- [`client.tests.getList(params: ParamsToGetTestList): EntityListIterator<TestItem>`](#get-all-property-validation-tests)
+- [`client.tests.runTest(params: ParamsToRunTest): Promise<Run | undefined>`](#run-property-validation-test)
+- [`client.runs.getMinimalList(params: ParamsToGetRunList): Promise<MinimalRun[]>`](#get-all-property-validation-runs--minimal)
+- [`client.runs.getRepresentationList(params: ParamsToGetRunList): Promise<RunDetails[]>`](#get-all-property-validation-runs---detailed)
+- [`client.runs.getSingle(params: ParamsToGetRun): Promise<RunDetails>`](#get-property-validation-run)
+- [`client.results.get(params: ParamsToGetResult): Promise<ResponseFromGetResult>`](#get-property-validation-result)
+- [`client.rules.delete(params: ParamsToDeleteRule): Promise<void>`](#delete-property-validation-rule)
+- [`client.tests.delete(params: ParamsToDeleteTest): Promise<void>`](#delete-property-validation-test)
+- [`client.runs.delete(params: ParamsToDeleteRun): Promise<void>`](#delete-property-validation-run)
+
 ## Authorization options
 
 There are two ways to provide the authorization token for the wrapper functions:
@@ -51,27 +86,6 @@ async function printRuleTemplateIds(accessToken: string, projectId: string): Pro
   const templatesIterator: EntityListIterator<RuleTemplate> = propertyValidationClient.templates.getList(params);
   for await (const template of templatesIterator)
     console.log(template.id);
-}
-```
-
-### Get property validation rule template by function name
-```typescript
-import { ParamsToGetTemplate, PropertyValidationClient, RuleTemplate } from "@itwin/property-validation-client";
-
-/** Function that queries for a rule template by function name and prints its id to the console. */
-async function printRuleTemplateId(accessToken: string, projectId: string, functionName: string): Promise<void> {
-  const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
-  const params: ParamsToGetTemplate = {
-    accessToken,
-    functionName,
-    urlParams: {
-      projectId
-    }
-  };
-
-  const template: RuleTemplate = await propertyValidationClient.templates.getSingle(params);
-
-  console.log(template.id);
 }
 ```
 
@@ -126,7 +140,26 @@ async function updatePropertyValidationRule(accessToken: string, ruleId: string)
 }
 ```
 
-### Get all property validation rules
+### Get all property validation rules -minimal
+```typescript
+import { EntityListIterator, MinimalRule, ParamsToGetRuleList, PropertyValidationClient } from "@itwin/property-validation-client";
+
+/** Function that queries all rules for a particular project and prints their ids to the console. */
+async function printRuleIds(accessToken: string, projectId: string): Promise<void> {
+  const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
+  const params: ParamsToGetRuleList = {
+    accessToken,
+    urlParams: {
+      projectId
+    }
+  };
+  const rulesIterator: EntityListIterator<MinimalRule> = propertyValidationClient.rules.getMinimalList(params);
+  for await (const rule of rulesIterator)
+    console.log(rule.id);
+}
+```
+
+### Get all property validation rules -detailed
 ```typescript
 import { EntityListIterator, ParamsToGetRuleList, PropertyValidationClient, RuleDetails } from "@itwin/property-validation-client";
 
@@ -291,7 +324,26 @@ async function deletePropertyValidationTest(accessToken: string, testId: string)
 }
 ```
 
-### Get all property validation runs
+### Get all property validation runs -minimal
+```typescript
+import { MinimalRun, ParamsToGetRunList, PropertyValidationClient } from "@itwin/property-validation-client";
+/** Function that queries all runs for a particular project and prints their ids to the console. */
+async function printRunIds(accessToken: string, projectId: string): Promise<void> {
+  const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
+  const params: ParamsToGetRunList = {
+    accessToken,
+    urlParams: {
+      projectId
+    }
+  };
+  const runs: MinimalRun[] = await propertyValidationClient.runs.getMinimalList(params);
+  runs.forEach((run) => {
+    console.log(run.id);
+  });
+}
+```
+
+### Get all property validation runs --detailed
 ```typescript
 import { ParamsToGetRunList, PropertyValidationClient, RunDetails } from "@itwin/property-validation-client";
 /** Function that queries all runs for a particular project and prints their ids to the console. */

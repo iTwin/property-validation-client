@@ -9,7 +9,7 @@ import { EntityListIteratorImpl } from "../../base/iterators/EntityListIteratorI
 import { OperationOptions } from "../OperationOptions";
 import { ParamsToCreateTest, ParamsToDeleteTest, ParamsToGetTest, ParamsToGetTestList, ParamsToRunTest, ParamsToUpdateTest } from "./TestOperationParams";
 import { AuthorizationCallback, GetNamedVersionListParams, IModelsClient, MinimalNamedVersion, NamedVersionOrderByProperty, OrderByOperator, toArray } from "@itwin/imodels-client-management";
-import { AccessTokenAdapter } from "@itwin/imodels-access-frontend";
+import { PropertyValidationClient } from "../../PropertyValidationClient";
 
 export class TestOperations<TOptions extends OperationOptions> extends OperationsBase<TOptions> {
   constructor(
@@ -113,10 +113,10 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       const iModelsClient: IModelsClient = new IModelsClient();
       let authorization: AuthorizationCallback;
       if (params.accessToken) {
-        authorization = AccessTokenAdapter.toAuthorizationCallback(params.accessToken);
+        authorization = PropertyValidationClient.toAuthorizationCallback(params.accessToken);
       } else if (this._options.accessTokenCallback) {
         const accessToken = await this._options.accessTokenCallback();
-        authorization = AccessTokenAdapter.toAuthorizationCallback(accessToken);
+        authorization = PropertyValidationClient.toAuthorizationCallback(accessToken);
       } else {
         throw new Error(`Access token is required`);
       }
@@ -132,9 +132,9 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       };
       const namedVersionsIterator: EntityListIterator<MinimalNamedVersion> = iModelsClient.namedVersions.getMinimalList(getNamedVersionListParams);
       const namedVersions: MinimalNamedVersion[] = await toArray(namedVersionsIterator);
-      if (namedVersions.length === 0)
+      if (namedVersions.length === 0) {
         return undefined;
-
+      }
       params.namedVersionId = namedVersions[0].id;
     }
     const body = {

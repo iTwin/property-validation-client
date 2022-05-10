@@ -16,10 +16,15 @@ describe("PropertyValidationClient", async () => {
   const accessTokenCallback = TestConfig.getAccessTokenCallback();
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient(options, accessTokenCallback);
 
+  const projectId: string = process.env.IMJS_TEST_PROJECT_ID ?? "";
+  const iModelId: string = process.env.IMJS_TEST_IMODEL_ID ?? "";
+  chai.assert.isNotEmpty(projectId);
+  chai.assert.isNotEmpty(iModelId);
+
   it("should get a list of rule templates", async () => {
     const params: ParamsToGetTemplateList = {
       urlParams: {
-        projectId: TestConfig.projectId,
+        projectId,
         $top: 5,
       },
     };
@@ -76,7 +81,7 @@ describe("PropertyValidationClient", async () => {
   it("should get a list of rules (minimal)", async () => {
     const params: ParamsToGetRuleList = {
       urlParams: {
-        projectId: TestConfig.projectId,
+        projectId,
         $top: 5,
       },
     };
@@ -90,7 +95,7 @@ describe("PropertyValidationClient", async () => {
   it("should get a list of rules (representation", async () => {
     const params: ParamsToGetRuleList = {
       urlParams: {
-        projectId: TestConfig.projectId,
+        projectId,
         $top: 5,
       },
     };
@@ -114,7 +119,7 @@ describe("PropertyValidationClient", async () => {
   it("should create a test", async () => {
     const rules: string[] = [propertyValidationClient.ruleId];
     const params: ParamsToCreateTest = {
-      projectId: TestConfig.projectId,
+      projectId,
       displayName: "Test1",
       description: "Test 1",
       stopExecutionOnFailure: false,
@@ -157,7 +162,7 @@ describe("PropertyValidationClient", async () => {
   it("should get a list of tests", async () => {
     const params: ParamsToGetTestList = {
       urlParams: {
-        projectId: TestConfig.projectId,
+        projectId,
         $top: 5,
       },
     };
@@ -168,22 +173,10 @@ describe("PropertyValidationClient", async () => {
     chai.expect(tests).to.not.be.empty;
   });
 
-  it("should run a test", async () => {
-    const params: ParamsToRunTest = {
-      testId: propertyValidationClient.testId,
-      iModelId: TestConfig.iModelId,
-      namedVersionId: TestConfig.namedVersionId,
-    };
-    const run: Run | undefined = await propertyValidationClient.tests.runTest(params);
-
-    // Expect test to be run
-    chai.expect(run).to.not.be.undefined;
-  });
-
   it("should run a test with no named version id", async () => {
     const params: ParamsToRunTest = {
       testId: propertyValidationClient.testId,
-      iModelId: TestConfig.iModelId,
+      iModelId,
     };
     const run: Run | undefined = await propertyValidationClient.tests.runTest(params);
 
@@ -197,7 +190,7 @@ describe("PropertyValidationClient", async () => {
   it("should get a list of runs (minimal)", async () => {
     const params: ParamsToGetRunList = {
       urlParams: {
-        projectId: TestConfig.projectId,
+        projectId,
         $top: 5,
       },
     };
@@ -210,7 +203,7 @@ describe("PropertyValidationClient", async () => {
   it("should get a list of runs (representation)", async () => {
     const params: ParamsToGetRunList = {
       urlParams: {
-        projectId: TestConfig.projectId,
+        projectId,
         $top: 5,
       },
     };

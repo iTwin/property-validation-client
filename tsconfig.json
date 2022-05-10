@@ -3,7 +3,8 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "outDir": "./lib"
   },
   "include": [
     "./src/**/*.ts"
