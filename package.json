@@ -1,6 +1,6 @@
 {
   "name": "@itwin/property-validation-client",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Property Validation client for the iTwin platform",
   "main": "lib/cjs/property-validation-client.js",
   "module": "lib/esm/property-validation-client.js",
