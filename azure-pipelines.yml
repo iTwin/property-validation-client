@@ -93,6 +93,6 @@ stages:
     - template: templates/npmjs-publish-deployment.yaml@build-pipeline-scripts
       parameters:
         path: '*.tgz'
-        artifactName: PropertyValidationClient
+        artifactName: propertyValidationClient
         name: PropertyValidationClient
         dryrun: false
