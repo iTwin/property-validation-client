@@ -7,4 +7,6 @@
 !lib/**/*.js
 !lib/**/*.js.map
 
-lib/**/test/**
+lib/test/**
+lib/cjs/test/**
+lib/esm/test/**
