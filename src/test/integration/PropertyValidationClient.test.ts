@@ -4,11 +4,12 @@
 *--------------------------------------------------------------------------------------------*/
 import * as chai from "chai";
 import { take } from "../../base/iterators/IteratorUtilFunctions";
-import { EntityListIterator } from "../../base/iterators/EntityListIterator";
-import { PropertyValidationClient, PropertyValidationClientOptions } from "../../PropertyValidationClient";
+import type { EntityListIterator } from "../../base/iterators/EntityListIterator";
+import type { PropertyValidationClientOptions } from "../../PropertyValidationClient";
+import { PropertyValidationClient } from "../../PropertyValidationClient";
 import { TestConfig } from "../TestConfig";
-import { MinimalRule, MinimalRun, ResponseFromGetResult, Rule, RuleDetails, RuleTemplate, Run, RunDetails, Test, TestDetails, TestItem } from "../../base";
-import { ParamsToCreateRule, ParamsToCreateTest, ParamsToDeleteRule, ParamsToDeleteRun, ParamsToDeleteTest, ParamsToGetResult, ParamsToGetRule, ParamsToGetRuleList, ParamsToGetRun, ParamsToGetRunList, ParamsToGetTemplateList, ParamsToGetTest, ParamsToGetTestList, ParamsToRunTest, ParamsToUpdateRule, ParamsToUpdateTest } from "../../operations";
+import type { MinimalRule, MinimalRun, ResponseFromGetResult, Rule, RuleDetails, RuleTemplate, Run, RunDetails, Test, TestDetails, TestItem } from "../../base";
+import type { ParamsToCreateRule, ParamsToCreateTest, ParamsToDeleteRule, ParamsToDeleteRun, ParamsToDeleteTest, ParamsToGetResult, ParamsToGetRule, ParamsToGetRuleList, ParamsToGetRun, ParamsToGetRunList, ParamsToGetTemplateList, ParamsToGetTest, ParamsToGetTestList, ParamsToRunTest, ParamsToUpdateRule, ParamsToUpdateTest } from "../../operations";
 
 chai.should();
 describe("PropertyValidationClient", async () => {
@@ -184,6 +185,7 @@ describe("PropertyValidationClient", async () => {
     chai.expect(run).to.not.be.undefined;
 
     // Save id of test run
+    // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
     propertyValidationClient.runId = run!.id;
   });
 

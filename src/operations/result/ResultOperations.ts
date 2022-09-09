@@ -3,9 +3,9 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import { OperationsBase } from "../../base/OperationsBase";
-import { ResponseFromGetResult } from "../../base/interfaces/apiEntities/ResultInterfaces";
-import { OperationOptions } from "../OperationOptions";
-import { ParamsToGetResult } from "./ResultOperationParams";
+import type { ResponseFromGetResult } from "../../base/interfaces/apiEntities/ResultInterfaces";
+import type { OperationOptions } from "../OperationOptions";
+import type { ParamsToGetResult } from "./ResultOperationParams";
 
 export class ResultOperations<TOptions extends OperationOptions> extends OperationsBase<TOptions> {
   constructor(
@@ -24,6 +24,7 @@ export class ResultOperations<TOptions extends OperationOptions> extends Operati
   public async get(params: ParamsToGetResult): Promise<ResponseFromGetResult> {
     const { accessToken, resultId } = params;
     const response = await this.sendGetRequest<ResponseFromGetResult>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getResultUrl({ resultId }),
     });

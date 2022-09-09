@@ -4,9 +4,9 @@
  *--------------------------------------------------------------------------------------------*/
 import { OperationsBase } from "../../base/OperationsBase";
 import { PreferReturn } from "../../base/interfaces/CommonInterfaces";
-import { MinimalRun, ResponseFromGetRun, ResponseFromGetRunList, ResponseFromGetRunListMinimal, RunDetails } from "../../base/interfaces/apiEntities/RunInterfaces";
-import { OperationOptions } from "../OperationOptions";
-import { ParamsToDeleteRun, ParamsToGetRun, ParamsToGetRunList } from "./RunOperationParams";
+import type { MinimalRun, ResponseFromGetRun, ResponseFromGetRunList, ResponseFromGetRunListMinimal, RunDetails } from "../../base/interfaces/apiEntities/RunInterfaces";
+import type { OperationOptions } from "../OperationOptions";
+import type { ParamsToDeleteRun, ParamsToGetRun, ParamsToGetRunList } from "./RunOperationParams";
 
 export class RunOperations<TOptions extends OperationOptions> extends OperationsBase<TOptions> {
   constructor(
@@ -25,6 +25,7 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    */
   public async getMinimalList(params: ParamsToGetRunList): Promise<MinimalRun[]> {
     const response = await this.sendGetRequest<ResponseFromGetRunListMinimal>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRunListUrl({ urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
@@ -42,6 +43,7 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    */
   public async getRepresentationList(params: ParamsToGetRunList): Promise<RunDetails[]> {
     const response = await this.sendGetRequest<ResponseFromGetRunList>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRunListUrl({ urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
@@ -59,6 +61,7 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
   public async getSingle(params: ParamsToGetRun): Promise<RunDetails> {
     const { accessToken, runId } = params;
     const response = await this.sendGetRequest<ResponseFromGetRun>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleRunUrl({ runId }),
     });
@@ -73,6 +76,7 @@ export class RunOperations<TOptions extends OperationOptions> extends Operations
    */
   public async delete(params: ParamsToDeleteRun): Promise<void> {
     await this.sendDeleteRequest<void>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteRunUrl(params),
     });

@@ -2,7 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { CollectionResponse, FunctionParameters, Link } from "../CommonInterfaces";
+import type { AllUserMetadata, CollectionResponse, FunctionParameters, Link } from "../CommonInterfaces";
 
 /** Links that belong to Rule entity returned from Property Validation API. */
 export interface RuleDetailLink {
@@ -62,6 +62,8 @@ export interface RuleDetails {
   dataType: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   _links: RuleUserInfoLinks;
+  /** User metadata. */
+  userMetadata: AllUserMetadata;
 }
 
 /** Get Rule API response. */

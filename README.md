@@ -170,7 +170,8 @@ async function printRuleIds(accessToken: string, projectId: string): Promise<voi
     accessToken,
     urlParams: {
       projectId
-    }
+    },
+    userMetadata: true,
   };
   const rulesIterator: EntityListIterator<RuleDetails> = propertyValidationClient.rules.getRepresentationList(params);
   for await (const rule of rulesIterator)
@@ -187,7 +188,8 @@ async function getPropertyValidationRule(accessToken: string, ruleId: string): P
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
   const params: ParamsToGetRule = {
     accessToken,
-    ruleId
+    ruleId,
+    userMetadata: true,
   };
 
   const rule: RuleDetails = await propertyValidationClient.rules.getSingle(params);
@@ -263,7 +265,8 @@ async function printTestIds(accessToken: string, projectId: string): Promise<voi
     accessToken,
     urlParams: {
       projectId
-    }
+    },
+    userMetadata: true,
   };
   const testsIterator: EntityListIterator<TestItem> = propertyValidationClient.tests.getList(params);
   for await (const test of testsIterator)
@@ -280,7 +283,8 @@ async function getPropertyValidationTest(accessToken: string, testId: string): P
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
   const params: ParamsToGetTest = {
     accessToken,
-    testId
+    testId,
+    userMetadata: true,
   };
 
   const test: TestDetails = await propertyValidationClient.tests.getSingle(params);
@@ -397,7 +401,7 @@ async function deletePropertyValidationRun(accessToken: string, runId: string): 
 
 ### Get property validation result
 ```typescript
-import { GetResultResponse, ParamsToGetResult, PropertyValidationClient } from "@itwin/property-validation-client";
+import { ParamsToGetResult, PropertyValidationClient, ResponseFromGetResult } from "@itwin/property-validation-client";
 
 /** Function that gets a property validation result and prints the count of validation failures. */
 async function getPropertyValidationResult(accessToken: string, resultId: string): Promise<void> {
@@ -407,7 +411,7 @@ async function getPropertyValidationResult(accessToken: string, resultId: string
     resultId
   };
 
-  const response: GetResultResponse = await propertyValidationClient.results.get(params);
+  const response: ResponseFromGetResult = await propertyValidationClient.results.get(params);
 
   console.log('Results count: ${response.result.length.toString()}');
 }
