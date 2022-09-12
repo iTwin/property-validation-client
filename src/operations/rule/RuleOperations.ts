@@ -31,7 +31,9 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
       const rules = (response as ResponseFromGetRuleListMinimal).rules;
       return rules;
     };
-
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<MinimalRule>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -56,7 +58,9 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
       const rules = (response as ResponseFromGetRuleList).rules;
       return rules;
     };
-
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<RuleDetails>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -76,6 +80,9 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
    */
   public async getSingle(params: ParamsToGetRule): Promise<RuleDetails> {
     const { accessToken, ruleId, userMetadata } = params;
+    if (!accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     const response = await this.sendGetRequest<ResponseFromGetRule>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
@@ -94,6 +101,9 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
    */
   public async delete(params: ParamsToDeleteRule): Promise<void> {
     const { accessToken, ruleId } = params;
+    if (!accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     await this.sendDeleteRequest<void>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
@@ -119,6 +129,9 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
       dataType: params.dataType,
       functionParameters: params.functionParameters,
     };
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     const response = await this.sendPostRequest<ResponseFromCreateRule>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
@@ -144,6 +157,9 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
       whereClause: params.whereClause,
       severity: params.severity,
     };
+    if (!params.accessToken && !this._options.accessTokenCallback) {
+      throw new Error(`Access token or callback is required`);
+    }
     const response = await this.sendPutRequest<ResponseFromUpdateRule>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
