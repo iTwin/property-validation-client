@@ -178,6 +178,7 @@ describe("PropertyValidationClient", async () => {
     const params: ParamsToRunTest = {
       testId: propertyValidationClient.testId,
       iModelId,
+      testSettings: {resultsLimit: "1000"},
     };
     const run: Run | undefined = await propertyValidationClient.tests.runTest(params);
 

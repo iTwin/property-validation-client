@@ -148,6 +148,7 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       testId: params.testId,
       iModelId: params.iModelId,
       namedVersionId: params.namedVersionId,
+      testSettings: params.testSettings,
     };
     const response = await this.sendPostRequest<ResponseFromRunTest>({
       // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion

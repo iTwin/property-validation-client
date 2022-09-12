@@ -295,16 +295,17 @@ async function getPropertyValidationTest(accessToken: string, testId: string): P
 
 ### Run property validation test
 ```typescript
-import { ParamsToRunTest, PropertyValidationClient, Run } from "@itwin/property-validation-client";
+import { ParamsToRunTest, PropertyValidationClient, Run, TestSettings } from "@itwin/property-validation-client";
 
 /** Function that runs a property validation test and prints its run id. */
-async function runPropertyValidationTest(accessToken: string, testId: string, iModelId: string, namedVersionId?: string): Promise<void> {
+async function runPropertyValidationTest(accessToken: string, testId: string, iModelId: string, namedVersionId?: string, testSettings?: TestSettings): Promise<void> {
   const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
   const params: ParamsToRunTest = {
     accessToken,
     testId,
     iModelId,
-    namedVersionId,   // Optional - defaults to latest
+    namedVersionId,   // Optional - defaults to latest version
+    testSettings,     // Optional
   };
 
   const run: Run = await propertyValidationClient.tests.runTest(params);

@@ -63,4 +63,11 @@ export interface ParamsToRunTest extends AuthorizationParam {
   iModelId: string;
   /** Named version id. */
   namedVersionId?: string;
+  /** Test settings. */
+  testSettings?: TestSettings;
+}
+
+export interface TestSettings {
+  /** Results limit. */
+  resultsLimit: string;
 }
