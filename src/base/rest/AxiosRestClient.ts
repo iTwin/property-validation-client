@@ -2,9 +2,10 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios from "axios";
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ValidationErrorParser } from "../ValidationErrorParser";
-import { HttpRequestParams, HttpRequestWithBodyParams, ParseErrorFunc, RestClient } from "./RestClient";
+import type { HttpRequestParams, HttpRequestWithBodyParams, ParseErrorFunc, RestClient } from "./RestClient";
 
 /** Default implementation for {@link RestClient} interface that uses `axios` library for sending the requests. */
 export class AxiosRestClient implements RestClient {

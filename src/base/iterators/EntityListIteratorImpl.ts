@@ -2,8 +2,8 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { EntityPageQueryFunc } from "../interfaces/UtilityTypes";
-import { EntityListIterator } from "./EntityListIterator";
+import type { EntityPageQueryFunc } from "../interfaces/UtilityTypes";
+import type { EntityListIterator } from "./EntityListIterator";
 import { EntityPageListIterator } from "./EntityPageListIterator";
 import { flatten } from "./IteratorUtilFunctions";
 

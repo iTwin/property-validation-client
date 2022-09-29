@@ -2,7 +2,8 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { ValidationError, ValidationErrorCode, ValidationErrorDetail } from "./interfaces/ValidationErrorInterfaces";
+import { ValidationErrorCode } from "./interfaces/ValidationErrorInterfaces";
+import type { ValidationError, ValidationErrorDetail } from "./interfaces/ValidationErrorInterfaces";
 
 interface ValidationApiErrorWrapper {
   error: ValidationApiError;

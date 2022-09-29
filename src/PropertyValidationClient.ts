@@ -2,10 +2,10 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { AccessTokenCallback, ApiOptions } from "./base/interfaces/CommonInterfaces";
-import { RecursiveRequired } from "./base/interfaces/UtilityTypes";
+import type { AccessTokenCallback, ApiOptions } from "./base/interfaces/CommonInterfaces";
+import type { RecursiveRequired } from "./base/interfaces/UtilityTypes";
 import { AxiosRestClient } from "./base/rest/AxiosRestClient";
-import { RestClient } from "./base/rest/RestClient";
+import type { RestClient } from "./base/rest/RestClient";
 import { Constants } from "./Constants";
 import { RuleOperations } from "./operations/rule/RuleOperations";
 import { RunOperations } from "./operations/run/RunOperations";
@@ -13,8 +13,8 @@ import { ResultOperations } from "./operations/result/ResultOperations";
 import { TestOperations } from "./operations/test/TestOperations";
 import { TemplateOperations } from "./operations/template/TemplateOperations";
 import { PropertyValidationApiUrlFormatter } from "./operations/PropertyValidationApiUrlFormatter";
-import { OperationOptions } from "./operations/OperationOptions";
-import { AuthorizationCallback } from "@itwin/imodels-client-management";
+import type { OperationOptions } from "./operations/OperationOptions";
+import type { AuthorizationCallback } from "@itwin/imodels-client-management";
 
 /** User-configurable Property Validation client options. */
 export interface PropertyValidationClientOptions {

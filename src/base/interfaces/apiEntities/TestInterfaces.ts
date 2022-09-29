@@ -10,8 +10,6 @@ export interface TestDetailLinks {
   createdBy: Link;
   /** Link to get user info of last modifier. */
   lastModifiedBy: Link;
-  /** Link to get Test details. */
-  test: Link;
 }
 
 export interface TestLinks {
@@ -19,6 +17,8 @@ export interface TestLinks {
   createdBy: Link;
   /** Link to get user info of last modifier. */
   lastModifiedBy: Link;
+  /** Link to get Test details. */
+  test: Link;
 }
 
 /** Test item. */
@@ -54,7 +54,7 @@ export interface TestDetails {
   /** User metadata. */
   userMetadata: AllUserMetadata;
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  _links: TestLinks;
+  _links: TestDetailLinks;
 }
 
 /** Get Test API response. */
