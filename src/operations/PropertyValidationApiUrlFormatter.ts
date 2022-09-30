@@ -2,11 +2,11 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { Dictionary } from "../base/interfaces/UtilityTypes";
-import { ParamsToGetTemplateListUrl } from "./template/TemplateOperationParams";
-import { ParamsToGetTestListUrl } from "./test/TestOperationParams";
-import { ParamsToGetRuleListUrl } from "./rule/RuleOperationParams";
-import { ParamsToGetRunListUrl } from "./run/RunOperationParams";
+import type { Dictionary } from "../base/interfaces/UtilityTypes";
+import type { ParamsToGetTemplateListUrl } from "./template/TemplateOperationParams";
+import type { ParamsToGetTestListUrl } from "./test/TestOperationParams";
+import type { ParamsToGetRuleListUrl } from "./rule/RuleOperationParams";
+import type { ParamsToGetRunListUrl } from "./run/RunOperationParams";
 
 type UrlParameterValue = string | number;
 

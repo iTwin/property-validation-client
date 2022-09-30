@@ -3,14 +3,13 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 import { Constants } from "../Constants";
-import { AccessTokenCallback, AuthorizationParam, CollectionResponse, PreferReturn } from "./interfaces/CommonInterfaces";
-import { Dictionary, EntityCollectionPage } from "./interfaces/UtilityTypes";
-import { RestClient } from "./rest/RestClient";
+import type { AccessTokenCallback, AuthorizationParam, CollectionResponse, PreferReturn } from "./interfaces/CommonInterfaces";
+import type { Dictionary, EntityCollectionPage } from "./interfaces/UtilityTypes";
+import type { RestClient } from "./rest/RestClient";
 
-type SendGetRequestParams = AuthorizationParam & { url: string, preferReturn?: PreferReturn };
+type SendGetRequestParams = AuthorizationParam & { url: string, preferReturn?: PreferReturn, userMetadata?: boolean };
 type SendPostRequestParams = AuthorizationParam & { url: string, body: unknown };
 type SendPutRequestParams = AuthorizationParam & { url: string, body: unknown };
-type SendPatchRequestParams = SendPostRequestParams;
 type SendDeleteRequestParams = AuthorizationParam & { url: string };
 
 export interface OperationsBaseOptions {
@@ -46,14 +45,6 @@ export class OperationsBase<TOptions extends OperationsBaseOptions> {
     });
   }
 
-  protected async sendPatchRequest<TResponse>(params: SendPatchRequestParams): Promise<TResponse> {
-    return this._options.restClient.sendPatchRequest<TResponse>({
-      url: params.url,
-      body: params.body,
-      headers: await this.formHeaders({ ...params, containsBody: true }),
-    });
-  }
-
   protected async sendDeleteRequest<TResponse>(params: SendDeleteRequestParams): Promise<TResponse> {
     return this._options.restClient.sendDeleteRequest<TResponse>({
       url: params.url,
@@ -65,17 +56,19 @@ export class OperationsBase<TOptions extends OperationsBaseOptions> {
     url: string;
     preferReturn?: PreferReturn;
     entityCollectionAccessor: (response: unknown) => TEntity[];
+    userMetadata: boolean;
   }): Promise<EntityCollectionPage<TEntity>> {
     const response = await this.sendGetRequest<CollectionResponse>(params);
     return {
       entities: params.entityCollectionAccessor(response),
       next: response._links.next
+        // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
         ? async () => this.getEntityCollectionPage({ ...params, url: response._links.next!.href })
         : undefined,
     };
   }
 
-  private async formHeaders(params: AuthorizationParam & { preferReturn?: PreferReturn, containsBody?: boolean }): Promise<Dictionary<string>> {
+  private async formHeaders(params: AuthorizationParam & { preferReturn?: PreferReturn, containsBody?: boolean, userMetadata?: boolean }): Promise<Dictionary<string>> {
     const headers: Dictionary<string> = {};
     if (params.accessToken) {
       headers[Constants.headers.authorization] = params.accessToken;
@@ -89,6 +82,9 @@ export class OperationsBase<TOptions extends OperationsBaseOptions> {
     }
     if (params.containsBody) {
       headers[Constants.headers.contentType] = Constants.headers.values.contentType;
+    }
+    if (params.userMetadata) {
+      headers[Constants.headers.userMetadata] = "true";
     }
     return headers;
   }

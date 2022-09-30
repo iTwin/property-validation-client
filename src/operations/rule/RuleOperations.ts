@@ -2,13 +2,14 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
+import { OperationUtils } from "../OperationUtils";
 import { OperationsBase } from "../../base/OperationsBase";
 import { PreferReturn } from "../../base/interfaces/CommonInterfaces";
-import { MinimalRule, ResponseFromCreateRule, ResponseFromGetRule, ResponseFromGetRuleList, ResponseFromGetRuleListMinimal, ResponseFromUpdateRule, Rule, RuleDetails } from "../../base/interfaces/apiEntities/RuleInterfaces";
-import { EntityListIterator } from "../../base/iterators/EntityListIterator";
+import type { MinimalRule, ResponseFromCreateRule, ResponseFromGetRule, ResponseFromGetRuleList, ResponseFromGetRuleListMinimal, ResponseFromUpdateRule, Rule, RuleDetails } from "../../base/interfaces/apiEntities/RuleInterfaces";
+import type { EntityListIterator } from "../../base/iterators/EntityListIterator";
 import { EntityListIteratorImpl } from "../../base/iterators/EntityListIteratorImpl";
-import { OperationOptions } from "../OperationOptions";
-import { ParamsToCreateRule, ParamsToDeleteRule, ParamsToGetRule, ParamsToGetRuleList, ParamsToUpdateRule } from "./RuleOperationParams";
+import type { OperationOptions } from "../OperationOptions";
+import type { ParamsToCreateRule, ParamsToDeleteRule, ParamsToGetRule, ParamsToGetRuleList, ParamsToUpdateRule } from "./RuleOperationParams";
 
 export class RuleOperations<TOptions extends OperationOptions> extends OperationsBase<TOptions> {
   constructor(
@@ -31,12 +32,14 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
       const rules = (response as ResponseFromGetRuleListMinimal).rules;
       return rules;
     };
-
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<MinimalRule>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
       preferReturn: PreferReturn.Minimal,
       entityCollectionAccessor,
+      userMetadata: false,
     }));
   }
 
@@ -54,12 +57,14 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
       const rules = (response as ResponseFromGetRuleList).rules;
       return rules;
     };
-
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<RuleDetails>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getRuleListUrl({urlParams: params.urlParams }),
       preferReturn: PreferReturn.Representation,
       entityCollectionAccessor,
+      userMetadata: params.userMetadata ?? false,
     }));
   }
 
@@ -71,10 +76,13 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
    * @returns {Promise<RuleDetails>} a Rule with specified id. See {@link RuleDetails}.
    */
   public async getSingle(params: ParamsToGetRule): Promise<RuleDetails> {
-    const { accessToken, ruleId } = params;
+    const { accessToken, ruleId, userMetadata } = params;
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     const response = await this.sendGetRequest<ResponseFromGetRule>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleRuleUrl({ ruleId }),
+      userMetadata: userMetadata ?? false,
     });
     return response.rule;
   }
@@ -88,7 +96,9 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
    */
   public async delete(params: ParamsToDeleteRule): Promise<void> {
     const { accessToken, ruleId } = params;
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     await this.sendDeleteRequest<void>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteRuleUrl({ ruleId }),
     });
@@ -112,7 +122,9 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
       dataType: params.dataType,
       functionParameters: params.functionParameters,
     };
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     const response = await this.sendPostRequest<ResponseFromCreateRule>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.createRuleUrl(),
       body,
@@ -136,7 +148,9 @@ export class RuleOperations<TOptions extends OperationOptions> extends Operation
       whereClause: params.whereClause,
       severity: params.severity,
     };
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     const response = await this.sendPutRequest<ResponseFromUpdateRule>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.updateRuleUrl(params),
       body,

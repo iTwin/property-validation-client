@@ -2,7 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { AuthorizationParam, CollectionRequestParams, FunctionParameters } from "../../base/interfaces/CommonInterfaces";
+import type { AuthorizationParam, CollectionRequestParams, FunctionParameters } from "../../base/interfaces/CommonInterfaces";
 
 /** Url parameters supported in Rule list query. */
 export interface ParamsToGetRuleListUrl extends CollectionRequestParams {
@@ -14,12 +14,16 @@ export interface ParamsToGetRuleListUrl extends CollectionRequestParams {
 export interface ParamsToGetRuleList extends AuthorizationParam {
   /** Parameters that will be appended to the entity list request url that will narrow down the results. */
   urlParams?: ParamsToGetRuleListUrl;
+  /** Flag to get user metadata. */
+  userMetadata?: boolean;
 }
 
 /** Parameters for get single Rule operation. */
 export interface ParamsToGetRule extends AuthorizationParam {
   /** Rule id. */
   ruleId: string;
+  /** Flag to get user metadata. */
+  userMetadata?: boolean;
 }
 
 /** Parameters for delete single Rule operation. */

@@ -2,7 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { Link } from "../CommonInterfaces";
+import type { Link } from "../CommonInterfaces";
 
 /** Links that belong to Run entity returned from Property Validation API. */
 export interface RunDetailLink {

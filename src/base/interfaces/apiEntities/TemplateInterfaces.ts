@@ -2,7 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { CollectionResponse, FunctionParameters } from "../CommonInterfaces";
+import type { CollectionResponse, FunctionParameters } from "../CommonInterfaces";
 
 /** Template item. */
 export interface RuleTemplate {

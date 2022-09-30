@@ -2,13 +2,15 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
+import { OperationUtils } from "../OperationUtils";
 import { OperationsBase } from "../../base/OperationsBase";
-import { ResponseFromCreateTest, ResponseFromGetTest, ResponseFromGetTestList, ResponseFromRunTest, ResponseFromUpdateTest, Run, Test, TestDetails, TestItem } from "../../base/interfaces/apiEntities/TestInterfaces";
-import { EntityListIterator } from "../../base/iterators/EntityListIterator";
+import type { ResponseFromCreateTest, ResponseFromGetTest, ResponseFromGetTestList, ResponseFromRunTest, ResponseFromUpdateTest, Run, Test, TestDetails, TestItem } from "../../base/interfaces/apiEntities/TestInterfaces";
+import type { EntityListIterator } from "../../base/iterators/EntityListIterator";
 import { EntityListIteratorImpl } from "../../base/iterators/EntityListIteratorImpl";
-import { OperationOptions } from "../OperationOptions";
-import { ParamsToCreateTest, ParamsToDeleteTest, ParamsToGetTest, ParamsToGetTestList, ParamsToRunTest, ParamsToUpdateTest } from "./TestOperationParams";
-import { AuthorizationCallback, GetNamedVersionListParams, IModelsClient, MinimalNamedVersion, NamedVersionOrderByProperty, OrderByOperator, toArray } from "@itwin/imodels-client-management";
+import type { OperationOptions } from "../OperationOptions";
+import type { ParamsToCreateTest, ParamsToDeleteTest, ParamsToGetTest, ParamsToGetTestList, ParamsToRunTest, ParamsToUpdateTest } from "./TestOperationParams";
+import type { AuthorizationCallback, GetNamedVersionListParams, MinimalNamedVersion} from "@itwin/imodels-client-management";
+import { IModelsClient, NamedVersionOrderByProperty, OrderByOperator, toArray } from "@itwin/imodels-client-management";
 import { PropertyValidationClient } from "../../PropertyValidationClient";
 
 export class TestOperations<TOptions extends OperationOptions> extends OperationsBase<TOptions> {
@@ -32,11 +34,13 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       const tests = (response as ResponseFromGetTestList).tests;
       return tests;
     };
-
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     return new EntityListIteratorImpl(async () => this.getEntityCollectionPage<TestItem>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getTestListUrl({ urlParams: params.urlParams }),
       entityCollectionAccessor,
+      userMetadata: params.userMetadata ?? false,
     }));
   }
 
@@ -48,10 +52,13 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    * @returns {Promise<TestDetails>} a Test with specified id. See {@link TestDetails}.
    */
   public async getSingle(params: ParamsToGetTest): Promise<TestDetails> {
-    const { accessToken, testId } = params;
+    const { accessToken, testId, userMetadata } = params;
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     const response = await this.sendGetRequest<ResponseFromGetTest>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.getSingleTestUrl({ testId }),
+      userMetadata: userMetadata ?? false,
     });
     return response.test;
   }
@@ -70,7 +77,9 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       stopExecutionOnFailure: params.stopExecutionOnFailure,
       rules: params.rules,
     };
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     const response = await this.sendPostRequest<ResponseFromCreateTest>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.createTestUrl(),
       body,
@@ -92,7 +101,9 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       stopExecutionOnFailure: params.stopExecutionOnFailure,
       rules: params.rules,
     };
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     const response = await this.sendPutRequest<ResponseFromUpdateTest>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.updateTestUrl(params),
       body,
@@ -108,17 +119,17 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    * @returns {Promise<Run>} newly started Run. See {@link Run}.
    */
   public async runTest(params: ParamsToRunTest): Promise<Run | undefined> {
+    OperationUtils.ensureAccessTokenProvided(params.accessToken, this._options.accessTokenCallback);
     // If namedVersionId is not specified, then try to get latest version as default
     if (params.namedVersionId === undefined) {
       const iModelsClient: IModelsClient = new IModelsClient();
       let authorization: AuthorizationCallback;
       if (params.accessToken) {
         authorization = PropertyValidationClient.toAuthorizationCallback(params.accessToken);
-      } else if (this._options.accessTokenCallback) {
-        const accessToken = await this._options.accessTokenCallback();
-        authorization = PropertyValidationClient.toAuthorizationCallback(accessToken);
       } else {
-        throw new Error(`Access token is required`);
+        // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
+        const accessToken = await this._options.accessTokenCallback!();
+        authorization = PropertyValidationClient.toAuthorizationCallback(accessToken);
       }
       const getNamedVersionListParams: GetNamedVersionListParams = {
         authorization,
@@ -141,8 +152,10 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
       testId: params.testId,
       iModelId: params.iModelId,
       namedVersionId: params.namedVersionId,
+      testSettings: params.testSettings,
     };
     const response = await this.sendPostRequest<ResponseFromRunTest>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: params.accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.runTestUrl(),
       body,
@@ -160,7 +173,9 @@ export class TestOperations<TOptions extends OperationOptions> extends Operation
    */
   public async delete(params: ParamsToDeleteTest): Promise<void> {
     const { accessToken, testId } = params;
+    OperationUtils.ensureAccessTokenProvided(accessToken, this._options.accessTokenCallback);
     await this.sendDeleteRequest<void>({
+      // eslint-disable-next-line  @typescript-eslint/no-non-null-assertion
       accessToken: accessToken ?? await this._options.accessTokenCallback!(),
       url: this._options.urlFormatter.deleteTestUrl({ testId }),
     });

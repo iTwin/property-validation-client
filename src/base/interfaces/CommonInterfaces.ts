@@ -64,6 +64,16 @@ export enum PreferReturn {
   Representation = "representation"
 }
 
+export interface AllUserMetadata {
+  createdBy: UserMetadata;
+  modifiedBy: UserMetadata;
+}
+
+export interface UserMetadata {
+  email: string;
+  name: string;
+}
+
 /** Function parameters - vary depending on the selected rule template */
 export interface FunctionParameters {
   /** Property name. */

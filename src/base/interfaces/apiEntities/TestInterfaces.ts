@@ -2,7 +2,7 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { CollectionResponse, Link } from "../CommonInterfaces";
+import type { AllUserMetadata, CollectionResponse, Link } from "../CommonInterfaces";
 
 /** Links that belong to Test entity returned from Property Validation API. */
 export interface TestDetailLinks {
@@ -10,8 +10,6 @@ export interface TestDetailLinks {
   createdBy: Link;
   /** Link to get user info of last modifier. */
   lastModifiedBy: Link;
-  /** Link to get Test details. */
-  test: Link;
 }
 
 export interface TestLinks {
@@ -19,6 +17,8 @@ export interface TestLinks {
   createdBy: Link;
   /** Link to get user info of last modifier. */
   lastModifiedBy: Link;
+  /** Link to get Test details. */
+  test: Link;
 }
 
 /** Test item. */
@@ -51,8 +51,10 @@ export interface TestDetails {
   rules: string[];
   /** Stop execution on failure flag. */
   stopExecutionOnFailure: boolean;
+  /** User metadata. */
+  userMetadata: AllUserMetadata;
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  _links: TestLinks;
+  _links: TestDetailLinks;
 }
 
 /** Get Test API response. */
