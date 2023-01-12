@@ -15,6 +15,7 @@ The __@itwin/property-validation-client__ package consists of thin wrapper funct
 - [EntityListIterator](./src/base/iterators/EntityListIterator.ts#L6)
 - [MinimalRule](./src/base/interfaces/apiEntities/RuleInterfaces.ts#L25)
 - [MinimalRun](./src/base/interfaces/apiEntities/RunInterfaces.ts#L15)
+- [ResponseFromGetPropertiesInfo](./src/base/interfaces/apiEntities/PropertiesInfoInterfaces.ts#L19)
 - [ResponseFromGetResult](./src/base/interfaces/apiEntities/ResultInterfaces.ts#L26)
 - [Rule](./src/base/interfaces/apiEntities/RuleInterfaces.ts#L90)
 - [RuleDetails](./src/base/interfaces/apiEntities/RuleInterfaces.ts#L35)
@@ -26,6 +27,8 @@ The __@itwin/property-validation-client__ package consists of thin wrapper funct
 - [TestItem](./src/base/interfaces/apiEntities/TestInterfaces.ts#L24)
 
 ## Key methods
+- [`client.imodel.extractSchemaInfo(params: ParamsToExtractSchemaInfo): Promise<void>`](#extract-schema-information)
+- [`client.schema.getPropertiesInfo(params: ParamsToGetPropertiesInfo): Promise<PropertiesInfo>`](#get-property-validation-properties-information)
 - [`client.templates.getList(params: ParamsToGetTemplateList): EntityListIterator<RuleTemplate>`](#get-all-property-validation-rule-templates)
 - [`client.rules.create(params: ParamsToCreateRule): Promise<Rule>`](#create-property-validation-rule)
 - [`client.rules.update(params: ParamsToUpdateRule): Promise<Rule>`](#update-property-validation-rule)
@@ -418,3 +421,37 @@ async function getPropertyValidationResult(accessToken: string, resultId: string
 }
 ```
 
+### Extract schema information
+```typescript
+import { PropertyValidationClient, ParamsToExtractSchemaInfo } from "@itwin/property-validation-client";
+/** Function that extracts schema info. */
+async function extractSchemaInfo(accessToken: string, projectId: string, iModelId: string): Promise<void> {
+  const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
+  const params: ParamsToExtractSchemaInfo = {
+    accessToken,
+    iModelId,
+    urlParams: {
+      projectId
+    }
+  };
+  await propertyValidationClient.schema.extractSchemaInfo(params);
+}
+```
+
+### Get property validation properties information
+```typescript
+import { PropertyValidationClient, ParamsToGetPropertiesInfo, PropertiesInfo } from "@itwin/property-validation-client";
+/** Function that gets the iModel properties information and prints the extraction status. */
+async function getPropertiesInfo(accessToken: string, projectId: string, iModelId: string, filter: string): Promise<void> {
+  const propertyValidationClient: PropertyValidationClient = new PropertyValidationClient();
+  const params: ParamsToGetPropertiesInfo = {
+    iModelId,
+    urlParams: {
+      projectId,
+      filter,
+    },
+  };
+  const propertiesInfo: PropertiesInfo = await propertyValidationClient.schema.getPropertiesInfo(params);
+  console.log('Status: ${propertiesInfo.status}');
+}
+```

@@ -6,6 +6,7 @@ export * from "./ValidationErrorParser";
 export * from "./interfaces/CommonInterfaces";
 export * from "./interfaces/UtilityTypes";
 export * from "./interfaces/ValidationErrorInterfaces";
+export * from "./interfaces/apiEntities/PropertiesInfoInterfaces";
 export * from "./interfaces/apiEntities/ResultInterfaces";
 export * from "./interfaces/apiEntities/RuleInterfaces";
 export * from "./interfaces/apiEntities/RunInterfaces";

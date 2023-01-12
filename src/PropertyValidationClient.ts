@@ -12,6 +12,7 @@ import { RunOperations } from "./operations/run/RunOperations";
 import { ResultOperations } from "./operations/result/ResultOperations";
 import { TestOperations } from "./operations/test/TestOperations";
 import { TemplateOperations } from "./operations/template/TemplateOperations";
+import { SchemaOperations } from "./operations/schema/SchemaOperations";
 import { PropertyValidationApiUrlFormatter } from "./operations/PropertyValidationApiUrlFormatter";
 import type { OperationOptions } from "./operations/OperationOptions";
 import type { AuthorizationCallback } from "@itwin/imodels-client-management";
@@ -81,6 +82,11 @@ export class PropertyValidationClient {
   /** Result operations. See {@link ResultOperations}. */
   public get results(): ResultOperations<OperationOptions> {
     return new ResultOperations(this._operationsOptions);
+  }
+
+  /** Schema operations. See {@link SchemaOperations}. */
+  public get schema(): SchemaOperations<OperationOptions> {
+    return new SchemaOperations(this._operationsOptions);
   }
 
   /**

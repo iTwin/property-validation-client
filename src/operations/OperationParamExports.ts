@@ -5,5 +5,6 @@
 export * from "./result/ResultOperationParams";
 export * from "./rule/RuleOperationParams";
 export * from "./run/RunOperationParams";
+export * from "./schema/SchemaOperationParams";
 export * from "./template/TemplateOperationParams";
 export * from "./test/TestOperationParams";
