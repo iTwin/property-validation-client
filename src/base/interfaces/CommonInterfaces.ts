@@ -75,7 +75,7 @@ export interface UserMetadata {
 }
 
 /** Function parameters - vary depending on the selected rule template */
-export interface FunctionParameters {
+export interface FunctionParametersBase {
   /** Property name. */
   propertyName?: string;
   /** Regex pattern. */
@@ -84,10 +84,13 @@ export interface FunctionParameters {
   upperBound?: string;
   /** Lower bound of property value. */
   lowerBound?: string;
+}
+
+export interface FunctionParameters extends FunctionParametersBase {
   /** Nested template id (multi-property validation). */
   templateId?: string;
   /** Nested parameters (multi-property validation). */
-  functionParameters?: string;
+  functionParameters?: FunctionParametersBase;
   /** Array of schemas/entities/properties to process (multi-property validation). */
   schemas?: SchemaList[];
 }

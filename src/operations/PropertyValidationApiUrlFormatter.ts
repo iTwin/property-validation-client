@@ -7,6 +7,7 @@ import type { ParamsToGetTemplateListUrl } from "./template/TemplateOperationPar
 import type { ParamsToGetTestListUrl } from "./test/TestOperationParams";
 import type { ParamsToGetRuleListUrl } from "./rule/RuleOperationParams";
 import type { ParamsToGetRunListUrl } from "./run/RunOperationParams";
+import type { ParamsToGetPropertiesInfoUrl } from "./schema/SchemaOperationParams";
 
 type UrlParameterValue = string | number;
 
@@ -77,6 +78,14 @@ export class PropertyValidationApiUrlFormatter {
 
   public getResultUrl(params: { resultId: string } ): string {
     return `${this.baseUrl}/results/${params.resultId}`;
+  }
+
+  public getPropertiesInfoUrl(params: { iModelId: string, urlParams?: ParamsToGetPropertiesInfoUrl }): string {
+    return `${this.baseUrl}/properties/imodels/${params.iModelId}${this.formQueryString({ ...params.urlParams })}`;
+  }
+
+  public extractSchemaInfoUrl(params: { iModelId: string }): string {
+    return `${this.baseUrl}/schema/imodels/${params.iModelId}}`;
   }
 
   protected formQueryString(urlParameters: Dictionary<UrlParameterValue> | undefined): string {

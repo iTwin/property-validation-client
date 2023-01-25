@@ -6,4 +6,5 @@ export * from "./rule/RuleOperations";
 export * from "./run/RunOperations";
 export * from "./test/TestOperations";
 export * from "./result/ResultOperations";
+export * from "./schema/SchemaOperations";
 export * from "./template/TemplateOperations";
