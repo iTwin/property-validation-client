@@ -21,6 +21,7 @@ export class SchemaOperations<TOptions extends OperationOptions> extends Operati
    * Extract schema info} operation from Clash Detection API.
    * @param {ParamsToExtractSchemaInfo} parameters for this operation. See {@link ParamsToExtractSchemaInfo}.
    * @returns {Promise<void>}.
+   * @deprecated The method should not be used
    */
   public async extractSchemaInfo(params: ParamsToExtractSchemaInfo): Promise<void> {
     const { accessToken, iModelId, projectId } = params;

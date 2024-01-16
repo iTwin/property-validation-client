@@ -1,6 +1,6 @@
 {
   "name": "@itwin/property-validation-client",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Property Validation client for the iTwin platform",
   "main": "lib/cjs/property-validation-client.js",
   "module": "lib/esm/property-validation-client.js",
@@ -31,7 +31,7 @@
     "url": "http://www.bentley.com"
   },
   "dependencies": {
-    "@itwin/imodels-client-management": "^1.1.0",
+    "@itwin/imodels-client-management": "^4.2.3",
     "axios": "^0.27.2"
   },
   "devDependencies": {

@@ -1,5 +1,9 @@
 # @itwin/property-validation-client
 
+## 0.3.4
+
+- Deprecation of get/extract schema info and get/extract models and categories
+
 ## 0.4.0
 
 - Add support for extracting schema info and getting property value validation properties
