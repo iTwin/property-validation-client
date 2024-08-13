@@ -2,7 +2,7 @@
 
 ## 0.4.2
 
--In alignment with our ongoing portfolio simplification efforts, Bentley has made the strategic decision to discontinue support for iTwin Design Validation, effective August 30, 2024.
+- In alignment with our ongoing portfolio simplification efforts, Bentley has made the strategic decision to discontinue support for iTwin Design Validation, effective August 30, 2024.
 
 ## 0.4.0
 
