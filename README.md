@@ -1,3 +1,7 @@
+# NOTE: The Validation API has been discontinued.
+
+In alignment with our ongoing portfolio simplification efforts, Bentley has made the strategic decision to discontinue support for iTwin Design Validation, effective August 30, 2024.
+
 # Property Validation Client Library
 
 Copyright © Bentley Systems, Incorporated. All rights reserved. See [LICENSE.md](./LICENSE.md) for license terms and full copyright notice.
